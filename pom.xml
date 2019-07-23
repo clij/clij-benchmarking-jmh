@@ -69,6 +69,14 @@ THE POSSIBILITY OF SUCH DAMAGE.
         </dependency>
     </dependencies>
 
+
+    <repositories>
+        <repository>
+            <id>clij</id>
+            <url>http://dl.bintray.com/haesleinhuepf/clij</url>
+        </repository>
+    </repositories>
+
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
