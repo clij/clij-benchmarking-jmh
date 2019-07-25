@@ -59,7 +59,7 @@ THE POSSIBILITY OF SUCH DAMAGE.
         </dependency>
         <dependency>
             <groupId>net.haesleinhuepf</groupId>
-            <artifactId>clij-benchmarking</artifactId>
+            <artifactId>clij-core</artifactId>
             <version>1.0.9-BETA</version>
         </dependency>
         <dependency>
@@ -71,6 +71,21 @@ THE POSSIBILITY OF SUCH DAMAGE.
             <groupId>com.github.mcib3d</groupId>
             <artifactId>mcib3d-core</artifactId>
             <version>3.94</version>
+        </dependency>
+        <dependency>
+            <groupId>sc.fiji</groupId>
+            <artifactId>Fiji_Plugins</artifactId>
+            <version>3.1.1</version>
+        </dependency>
+        <dependency>
+            <groupId>sc.fiji</groupId>
+            <artifactId>VIB_</artifactId>
+            <version>3.0.2</version>
+        </dependency>
+        <dependency>
+            <groupId>mpicbg</groupId>
+            <artifactId>mpicbg</artifactId>
+            <version>1.2.0</version>
         </dependency>
     </dependencies>
 
