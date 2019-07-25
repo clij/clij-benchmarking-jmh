@@ -31,7 +31,7 @@ public class Median2D extends AbstractBenchmark {
         ClearCLBuffer clb2Dc = images.getCLImage2Dc();
 
         int kernelSize = CLIJUtilities.radiusToKernelSize((int)radius.getRadiusF());
-        //images.clij.op().medianBox(clb2Da, clb2Dc, kernelSize, kernelSize);
+        images.clij.op().medianBox(clb2Da, clb2Dc, kernelSize, kernelSize);
 
         return clb2Dc;
     }
