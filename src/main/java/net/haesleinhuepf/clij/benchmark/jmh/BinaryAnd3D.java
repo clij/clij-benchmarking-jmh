@@ -4,11 +4,11 @@ import ij.plugin.ImageCalculator;
 import net.haesleinhuepf.clij.clearcl.ClearCLBuffer;
 import org.openjdk.jmh.annotations.Benchmark;
 
-public class AddImagesWeighted3D extends AbstractBenchmark {
+public class BinaryAnd3D extends AbstractBenchmark {
     @Benchmark
     public Object ij(Images images) {
         ImageCalculator ic = new ImageCalculator();
-        return ic.run("Add create stack", images.getImp3Da(), images.getImp3Db());
+        return ic.run("AND create stack", images.getImp3Da(), images.getImp3Db());
     }
 
     @Benchmark
@@ -17,7 +17,7 @@ public class AddImagesWeighted3D extends AbstractBenchmark {
         ClearCLBuffer clb3Db = images.getCLImage3Db();
         ClearCLBuffer clb3Dc = images.getCLImage3Dc();
 
-        images.clij.op().addImagesWeighted(clb3Da, clb3Db, clb3Dc, 1f, 1f);
+        images.clij.op().binaryAnd(clb3Da, clb3Db, clb3Dc);
         return clb3Dc;
     }
 }

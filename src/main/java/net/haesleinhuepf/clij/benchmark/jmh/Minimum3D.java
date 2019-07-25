@@ -5,6 +5,7 @@ import ij.ImagePlus;
 import ij.ImageStack;
 import ij.plugin.Filters3D;
 import mcib3d.image3d.processing.FastFilters3D;
+import net.haesleinhuepf.clij.clearcl.ClearCLBuffer;
 import net.haesleinhuepf.clij.utilities.CLIJUtilities;
 import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.Scope;
@@ -14,18 +15,21 @@ import org.openjdk.jmh.annotations.State;
 public class Minimum3D extends AbstractBenchmark {
 
     @Benchmark
-    public Object minimum3D_ijrun(Images images, Radius radius) {
-        IJ.run(images.getImp3Da(), "Minimum 3D...", "x=" + radius.getRadiusF() + " y=" + radius.getRadiusF() + " z=" + radius.getRadiusF());
-        return images.getImp3Da();
+    public Object ijrun(Images images, Radius radius) {
+        ImagePlus imp = images.getImp3Da();
+        IJ.run(imp, "Minimum 3D...", "x=" + radius.getRadiusF() + " y=" + radius.getRadiusF() + " z=" + radius.getRadiusF());
+        return imp;
     }
 
     @Benchmark
     public Object clij(CLImages images, Radius radius) {
+        ClearCLBuffer clb3Da = images.getCLImage3Da();
+        ClearCLBuffer clb3Dc = images.getCLImage3Dc();
+
         int kernelSize = CLIJUtilities.radiusToKernelSize((int)radius.getRadiusF());
-        images.clij.op().minimumSphere(images.getCLImage3Da(),
-                images.getCLImage3Dc(),
+        images.clij.op().minimumSphere(clb3Da, clb3Dc,
                 kernelSize, kernelSize, kernelSize);
-        return images.getCLImage2Dc();
+        return clb3Dc;
     }
 
     @Benchmark

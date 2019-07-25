@@ -3,6 +3,7 @@ package net.haesleinhuepf.clij.benchmark.jmh;
 import ij.IJ;
 import ij.ImagePlus;
 import ij.plugin.filter.RankFilters;
+import net.haesleinhuepf.clij.clearcl.ClearCLBuffer;
 import net.haesleinhuepf.clij.utilities.CLIJUtilities;
 import org.openjdk.jmh.annotations.*;
 
@@ -11,17 +12,22 @@ public class Minimum2D extends AbstractBenchmark {
 
     @Benchmark
     public Object ijrun(Images images, Radius radius) {
-        IJ.run(images.getImp2Da(), "Minimum...", "radius=" + radius.getRadiusF());
-        return images.getImp2Da();
+        ImagePlus imp = images.getImp2Da();
+        IJ.run(imp, "Minimum...", "radius=" + radius.getRadiusF());
+        return imp;
     }
 
     @Benchmark
     public Object clij(CLImages images, Radius radius) {
+
+        ClearCLBuffer clb2Da = images.getCLImage2Da();
+        ClearCLBuffer clb2Dc = images.getCLImage2Dc();
+
         int kernelSize = CLIJUtilities.radiusToKernelSize((int)radius.getRadiusF());
-        images.clij.op().minimumSphere(images.getCLImage2Da(),
-                images.getCLImage2Dc(),
+        images.clij.op().minimumSphere(clb2Da,
+                clb2Dc,
                 kernelSize, kernelSize);
-        return images.getCLImage2Dc();
+        return clb2Dc;
     }
 
     @Benchmark
