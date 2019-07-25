@@ -1,23 +1,17 @@
 package net.haesleinhuepf.clij.benchmark.jmh;
 
+import ij.IJ;
 import ij.ImagePlus;
 import ij.Prefs;
 import ij.gui.NewImage;
+import ij.plugin.Duplicator;
 import ij.plugin.filter.GaussianBlur;
 import ij.plugin.filter.RankFilters;
 import net.haesleinhuepf.clij.CLIJ;
 import net.haesleinhuepf.clij.clearcl.ClearCLBuffer;
-import org.openjdk.jmh.annotations.BenchmarkMode;
-import org.openjdk.jmh.annotations.Fork;
-import org.openjdk.jmh.annotations.Measurement;
-import org.openjdk.jmh.annotations.Mode;
-import org.openjdk.jmh.annotations.OutputTimeUnit;
-import org.openjdk.jmh.annotations.Param;
-import org.openjdk.jmh.annotations.Scope;
-import org.openjdk.jmh.annotations.Setup;
-import org.openjdk.jmh.annotations.State;
-import org.openjdk.jmh.annotations.TearDown;
-import org.openjdk.jmh.annotations.Warmup;
+import org.openjdk.jmh.annotations.*;
+
+import java.io.File;
 import java.util.concurrent.TimeUnit;
 
 @BenchmarkMode(Mode.AverageTime)
@@ -34,7 +28,7 @@ public class AbstractBenchmark {
     private ImagePlus emptyImp = new ImagePlus();
     @State(Scope.Benchmark)
     public static class Radius {
-        @Param({"1", "10"})
+        @Param({"2"/*, "10"*/})
         int radius;
         float getRadiusF() {
             return radius;
@@ -45,7 +39,7 @@ public class AbstractBenchmark {
         // Use a single pixel for testing the clijNoOp
 //@Param({"1"})
         //@Param({"1", "512", "1024", "2048", "4096"})
-        @Param({"1", "2048"})
+        @Param({"4096"/*, "2048"*/})
         int size;
 
         ImagePlus imp2Da;
@@ -76,20 +70,30 @@ public class AbstractBenchmark {
             return imp3Dc;
         }
 
-        @Setup
+        @Setup(Level.Invocation)
         public void setup() {
-            imp2Da = NewImage.createByteImage("title", size, size, 1,
-                    NewImage.FILL_RANDOM);
-            imp2Db = NewImage.createByteImage("title", size, size, 1,
-                    NewImage.FILL_RANDOM);
-            imp2Dc = NewImage.createByteImage("title", size, size, 1,
-                    NewImage.FILL_RANDOM);
-            imp3Da = NewImage.createByteImage("title", size, size, 10,
-                    NewImage.FILL_RANDOM);
-            imp3Db = NewImage.createByteImage("title", size, size, 10,
-                    NewImage.FILL_RANDOM);
-            imp3Dc = NewImage.createByteImage("title", size, size, 10,
-                    NewImage.FILL_RANDOM);
+            //System.out.println("im setup");
+            String filename1 = "./random_" + size + "_" + size + "_1.tif";
+            checkExistingFile(size, 1, filename1);
+
+            String filename10 = "./random_" + size + "_" + size + "_10.tif";
+            checkExistingFile(size, 10, filename10);
+
+            imp2Da = IJ.openImage(filename1);
+            imp2Db = new Duplicator().run(imp2Da);
+            imp2Dc = new Duplicator().run(imp2Da);
+
+            imp3Da = IJ.openImage(filename10);
+            imp3Db = new Duplicator().run(imp3Da, 1, imp3Da.getNSlices());
+            imp3Dc = new Duplicator().run(imp3Da, 1, imp3Da.getNSlices());
+        }
+
+        private void checkExistingFile(int sizeXY, int sizeZ, String filename) {
+            if (!new File(filename).exists()) {
+                ImagePlus imp = NewImage.createByteImage("title", sizeXY, sizeXY, sizeZ,
+                        NewImage.FILL_RANDOM);
+                IJ.save(imp, filename);
+            }
         }
     }
 
@@ -126,11 +130,12 @@ public class AbstractBenchmark {
         }
 
         @Override
-        @Setup
+        @Setup(Level.Invocation)
         public void setup() {
             super.setup();
+            //System.out.println("cl setup");
             clij = CLIJ.getInstance();
-            System.out.println("CLIJ " + clij);
+            //System.out.println("CLIJ " + clij);
 
             buffer2Da = clij.convert(imp2Da, ClearCLBuffer.class);
             buffer2Db = clij.convert(imp2Db, ClearCLBuffer.class);
@@ -140,14 +145,19 @@ public class AbstractBenchmark {
             buffer3Db = clij.convert(imp3Db, ClearCLBuffer.class);
             buffer3Dc = clij.convert(imp3Dc, ClearCLBuffer.class);
         }
-        @TearDown
+        @TearDown(Level.Invocation)
         public void tearDown() {
+            //System.out.println("cl teardown");
             buffer2Da.close();
             buffer2Db.close();
             buffer2Dc.close();
             buffer3Da.close();
             buffer3Db.close();
             buffer3Dc.close();
+        }
+
+        @TearDown
+        public void tearDownFinally() {
             clij.setConverterService(null);
             clij.close();
         }
