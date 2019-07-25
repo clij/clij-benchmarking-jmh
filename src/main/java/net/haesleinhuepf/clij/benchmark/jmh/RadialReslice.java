@@ -20,7 +20,7 @@ import java.awt.*;
 public class RadialReslice extends AbstractBenchmark {
     @Benchmark
     public Object ij(Images images) {
-        ImagePlus imp3D = images.getImp2Da();
+        ImagePlus imp3D = images.getImp3Da();
         imp3D.setRoi(new Line(imp3D.getWidth() / 2, imp3D.getWidth() / 2, 0, 0));
         Radial_Reslice_Copy rr = new Radial_Reslice_Copy();
         rr.setup("", imp3D);
@@ -43,13 +43,6 @@ public class RadialReslice extends AbstractBenchmark {
         clb3Dd.close();
 
         return null;
-    }
-
-    @Benchmark
-    public Object ijrun(Images images) {
-        ImagePlus imp3D = images.getImp3Da();
-        IJ.run(imp3D, "Radial Reslice", "angle=360 degrees_per_slice=1 direction=Clockwise");
-        return IJ.getImage();
     }
 
     // This plugins was copied to have it not opening the Dialog
