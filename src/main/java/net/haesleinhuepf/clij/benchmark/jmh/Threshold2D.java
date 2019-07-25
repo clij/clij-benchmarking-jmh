@@ -31,6 +31,6 @@ public class Threshold2D extends AbstractBenchmark {
         ImagePlus imp2D = images.getImp2Da();
         IJ.setThreshold(imp2D, 128, 255);
         IJ.run(imp2D, "Convert to Mask", "method=Default background=Dark black");
-        return IJ.getImage();
+        return imp2D;
     }
 }

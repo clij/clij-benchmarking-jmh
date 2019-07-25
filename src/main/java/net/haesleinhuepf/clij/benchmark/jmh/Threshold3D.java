@@ -24,6 +24,6 @@ public class Threshold3D extends AbstractBenchmark {
         ImagePlus imp3D = images.getImp3Da();
         IJ.setThreshold(imp3D, 128, 255);
         IJ.run(imp3D, "Convert to Mask", "method=Default background=Dark black stack");
-        return IJ.getImage();
+        return imp3D;
     }
 }

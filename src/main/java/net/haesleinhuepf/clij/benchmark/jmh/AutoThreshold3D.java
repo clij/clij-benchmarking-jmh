@@ -18,7 +18,7 @@ public class AutoThreshold3D extends AbstractBenchmark {
         int threshold = autoThresholder.getThreshold(AutoThresholder.Method.Default, histogram);
         IJ.setThreshold(imp3D, threshold, Integer.MAX_VALUE);
         new Thresholder().run("mask");
-        return IJ.getImage();
+        return imp3D;
     }
 
     @Benchmark
@@ -35,6 +35,6 @@ public class AutoThreshold3D extends AbstractBenchmark {
         ImagePlus imp3D = images.getImp3Da();
         IJ.setAutoThreshold(imp3D, "Default dark");
         IJ.run(imp3D, "Convert to Mask", "method=Default background=Dark black");
-        return IJ.getImage();
+        return imp3D;
     }
 }

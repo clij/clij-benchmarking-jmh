@@ -27,6 +27,6 @@ public class MaximumZProjection extends AbstractBenchmark {
     public Object ijrun(Images images) {
         ImagePlus imp3D = images.getImp3Da();
         IJ.run(imp3D, "Z Project...", "projection=[Max Intensity]");
-        return IJ.getImage();
+        return null;
     }
 }
