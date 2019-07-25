@@ -1,4 +1,0 @@
-"Benchmark","Mode","Threads","Samples","Score","Score Error (99.9%)","Unit","Param: size"
-"net.haesleinhuepf.clij.benchmark.jmh.AddScalar2D.clij","avgt",1,10,358299290.000000,14711130.685577,"ns/op",4096
-"net.haesleinhuepf.clij.benchmark.jmh.AddScalar2D.ij","avgt",1,10,9225913.032468,911512.937858,"ns/op",4096
-"net.haesleinhuepf.clij.benchmark.jmh.AddScalar2D.ijrun","avgt",1,10,14579866.563725,2414557.041889,"ns/op",4096
