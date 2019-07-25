@@ -1,1 +1,1 @@
-java -jar target/benchmarks2.jar -rf csv
+java -jar target/benchmarks3.jar -rf csv
