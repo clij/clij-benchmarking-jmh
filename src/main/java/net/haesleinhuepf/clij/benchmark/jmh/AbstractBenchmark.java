@@ -48,6 +48,10 @@ public class AbstractBenchmark {
         ImagePlus imp3Da;
         ImagePlus imp3Db;
         ImagePlus imp3Dc;
+        ImagePlus imp2Dbinarya;
+        ImagePlus imp2Dbinaryb;
+        ImagePlus imp3Dbinarya;
+        ImagePlus imp3Dbinaryb;
         //ImageProcessor getImage2D() {
             //return imp2Da.getProcessor().duplicate();
         //}
@@ -70,6 +74,19 @@ public class AbstractBenchmark {
             return imp3Dc;
         }
 
+        ImagePlus getImp2DBinarya() {
+            return imp2Dbinarya;
+        }
+        ImagePlus getImp2DBinaryb() {
+            return imp2Dbinaryb;
+        }
+        ImagePlus getImp3DBinarya() {
+            return imp3Dbinarya;
+        }
+        ImagePlus getImp3DBinaryb() {
+            return imp3Dbinaryb;
+        }
+
         @Setup(Level.Invocation)
         public void setup() {
             //System.out.println("im setup");
@@ -83,9 +100,21 @@ public class AbstractBenchmark {
             imp2Db = new Duplicator().run(imp2Da);
             imp2Dc = new Duplicator().run(imp2Da);
 
+            imp2Dbinarya = new Duplicator().run(imp2Da);
+            IJ.setThreshold(imp2Dbinarya, 128, 255);
+            IJ.run(imp2Dbinarya, "Convert to Mask", "method=Default background=Dark black");
+            imp2Dbinaryb = new Duplicator().run(imp2Dbinarya);
+
+
             imp3Da = IJ.openImage(filename10);
             imp3Db = new Duplicator().run(imp3Da, 1, imp3Da.getNSlices());
             imp3Dc = new Duplicator().run(imp3Da, 1, imp3Da.getNSlices());
+
+            imp3Dbinarya = new Duplicator().run(imp3Da);
+            IJ.setThreshold(imp3Dbinarya, 128, 255);
+            IJ.run(imp3Dbinarya, "Convert to Mask", "method=Default background=Dark black");
+            imp3Dbinaryb = new Duplicator().run(imp3Dbinarya);
+
         }
 
         private void checkExistingFile(int sizeXY, int sizeZ, String filename) {
@@ -109,6 +138,11 @@ public class AbstractBenchmark {
         ClearCLBuffer buffer3Db;
         ClearCLBuffer buffer3Dc;
 
+        ClearCLBuffer buffer2DBinarya;
+        ClearCLBuffer buffer2DBinaryb;
+        ClearCLBuffer buffer3DBinarya;
+        ClearCLBuffer buffer3DBinaryb;
+
         ClearCLBuffer getCLImage2Da() {
             return buffer2Da;
         }
@@ -129,7 +163,21 @@ public class AbstractBenchmark {
             return buffer3Dc;
         }
 
-        @Override
+        ClearCLBuffer getCLImage2DBinarya() {
+            return buffer2DBinarya;
+        }
+        ClearCLBuffer getCLImage2DBinaryb() {
+            return buffer2DBinaryb;
+        }
+
+        ClearCLBuffer getCLImage3DBinarya() {
+            return buffer3DBinarya;
+        }
+        ClearCLBuffer getCLImage3DBinaryb() {
+            return buffer3DBinaryb;
+        }
+
+            @Override
         @Setup(Level.Invocation)
         public void setup() {
             super.setup();
@@ -144,7 +192,13 @@ public class AbstractBenchmark {
             buffer3Da = clij.convert(imp3Da, ClearCLBuffer.class);
             buffer3Db = clij.convert(imp3Db, ClearCLBuffer.class);
             buffer3Dc = clij.convert(imp3Dc, ClearCLBuffer.class);
+
+            buffer2DBinarya = clij.convert(imp2Dbinarya, ClearCLBuffer.class);
+            buffer2DBinaryb = clij.convert(imp2Dbinaryb, ClearCLBuffer.class);
+            buffer3DBinarya = clij.convert(imp3Dbinarya, ClearCLBuffer.class);
+            buffer3DBinaryb = clij.convert(imp3Dbinaryb, ClearCLBuffer.class);
         }
+
         @TearDown(Level.Invocation)
         public void tearDown() {
             //System.out.println("cl teardown");
@@ -154,6 +208,11 @@ public class AbstractBenchmark {
             buffer3Da.close();
             buffer3Db.close();
             buffer3Dc.close();
+
+            imp2Dbinarya.close();
+            imp2Dbinaryb.close();
+            imp3Dbinarya.close();
+            imp3Dbinaryb.close();
         }
 
         @TearDown

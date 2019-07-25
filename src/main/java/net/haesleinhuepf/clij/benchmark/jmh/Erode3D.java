@@ -10,16 +10,23 @@ import process3d.Erode_;
 public class Erode3D extends AbstractBenchmark {
     @Benchmark
     public Object vib(Images images) {
-        ImagePlus imp3D = images.getImp3Da();
+        ImagePlus imp3D = images.getImp3DBinarya();
         new Erode_().erode(imp3D, 1, false);
         return imp3D;
     }
 
     @Benchmark
-    public Object clij(CLImages images) {
-        ClearCLBuffer clb3Da = images.getCLImage3Da();
+    public Object clij_box(CLImages images) {
+        ClearCLBuffer clb3Da = images.getCLImage3DBinarya();
         ClearCLBuffer clb3Dc = images.getCLImage3Dc();
         images.clij.op().erodeBox(clb3Da, clb3Dc);
+        return clb3Dc;
+    }
+    @Benchmark
+    public Object clij_sphere(CLImages images) {
+        ClearCLBuffer clb3Da = images.getCLImage3DBinarya();
+        ClearCLBuffer clb3Dc = images.getCLImage3Dc();
+        images.clij.op().erodeSphere(clb3Da, clb3Dc);
         return clb3Dc;
     }
 }

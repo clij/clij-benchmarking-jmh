@@ -13,14 +13,14 @@ public class BinaryAnd2D extends AbstractBenchmark {
     @Benchmark
     public Object ij(Images images) {
         ImageCalculator ic = new ImageCalculator();
-        return ic.run("AND create", images.getImp2Da(), images.getImp2Db());
+        return ic.run("AND create", images.getImp2DBinarya(), images.getImp2DBinaryb());
     }
 
     @Benchmark
     public Object clij(CLImages images) {
 
-        ClearCLBuffer clb2Da = images.getCLImage2Da();
-        ClearCLBuffer clb2Db = images.getCLImage2Db();
+        ClearCLBuffer clb2Da = images.getCLImage2DBinarya();
+        ClearCLBuffer clb2Db = images.getCLImage2DBinaryb();
         ClearCLBuffer clb2Dc = images.getCLImage2Dc();
 
         images.clij.op().binaryAnd(clb2Da, clb2Db, clb2Dc);
