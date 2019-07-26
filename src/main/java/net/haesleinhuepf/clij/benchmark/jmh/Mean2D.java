@@ -73,7 +73,7 @@ public class Mean2D extends AbstractBenchmark {
             throw new IllegalArgumentException();
         }
         mean.mean((int)radius.getRadiusF());
-        return mean;
+        return imp2D;
     }
 
 }

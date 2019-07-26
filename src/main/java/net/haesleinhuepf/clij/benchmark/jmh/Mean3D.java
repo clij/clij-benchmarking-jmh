@@ -76,7 +76,7 @@ public class Mean3D extends AbstractBenchmark {
     public Object ij(Images images, Radius radius) {
         ImagePlus imp3D = images.getImp3Da();
         int rad = (int)radius.getRadiusF();
-        Filters3D.filter(imp3D.getStack(), Filters3D.MEAN, rad, rad, rad );
+        imp3D = new ImagePlus("res", Filters3D.filter(imp3D.getStack(), Filters3D.MEAN, rad, rad, rad ));
         return imp3D;
     }
 
@@ -86,7 +86,7 @@ public class Mean3D extends AbstractBenchmark {
         Prefs.setThreads(1);
         ImagePlus imp3D = images.getImp3Da();
         int rad = (int)radius.getRadiusF();
-        Filters3D.filter(imp3D.getStack(), Filters3D.MEAN, rad, rad, rad );
+        imp3D = new ImagePlus("res", Filters3D.filter(imp3D.getStack(), Filters3D.MEAN, rad, rad, rad ));
         Prefs.setThreads(numThreads);
         return imp3D;
     }
@@ -97,7 +97,7 @@ public class Mean3D extends AbstractBenchmark {
         Prefs.setThreads( Runtime.getRuntime().availableProcessors());
         ImagePlus imp3D = images.getImp3Da();
         int rad = (int)radius.getRadiusF();
-        Filters3D.filter(imp3D.getStack(), Filters3D.MEAN, rad, rad, rad );
+        imp3D = new ImagePlus("res", Filters3D.filter(imp3D.getStack(), Filters3D.MEAN, rad, rad, rad ));
         Prefs.setThreads(numThreads);
         return imp3D;
     }
