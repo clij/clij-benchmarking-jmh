@@ -8,7 +8,7 @@ import ij.process.ByteProcessor;
 import net.haesleinhuepf.clij.clearcl.ClearCLBuffer;
 import org.openjdk.jmh.annotations.Benchmark;
 
-public class Threshold3D extends AbstractBenchmark {
+public class Threshold3D extends AbstractBenchmark implements BinaryImageBenchmark {
 
     @Benchmark
     public Object clij(CLImages images) {
@@ -23,7 +23,7 @@ public class Threshold3D extends AbstractBenchmark {
     public Object ijrun(Images images) {
         ImagePlus imp3D = images.getImp3Da();
         IJ.setThreshold(imp3D, 128, 255);
-        IJ.run(imp3D, "Convert to Mask", "method=Default background=Dark black stack");
+        IJ.run(imp3D, "Convert to Mask", "method=Default background=Dark black");
         return imp3D;
     }
 }
