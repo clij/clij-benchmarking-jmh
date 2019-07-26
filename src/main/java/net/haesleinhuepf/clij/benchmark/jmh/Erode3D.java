@@ -7,11 +7,11 @@ import net.haesleinhuepf.clij.clearcl.ClearCLBuffer;
 import org.openjdk.jmh.annotations.Benchmark;
 import process3d.Erode_;
 
-public class Erode3D extends AbstractBenchmark {
+public class Erode3D extends AbstractBenchmark implements BinaryImageBenchmark {
     @Benchmark
     public Object vib(Images images) {
         ImagePlus imp3D = images.getImp3DBinarya();
-        new Erode_().erode(imp3D, 1, false);
+        imp3D = new Erode_().erode(imp3D, 1, true);
         return imp3D;
     }
 
