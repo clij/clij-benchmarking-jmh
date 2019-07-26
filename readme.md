@@ -1,6 +1,6 @@
 # Benchmarking CLIJ using JMH
 
-[JMH](https://openjdk.java.net/projects/code-tools/jmh/) is Open JDKs solution to benchmarking. We used JMH to benchmark some of CLIJs and ImageJ/Fiji operations for image processing.
+[JMH](https://openjdk.java.net/projects/code-tools/jmh/) is Open JDKs solution for benchmarking Java code. We used JMH to benchmark some of CLIJs and ImageJ/Fiji operations for image processing.
 
 ## How to run the benchmark
 
@@ -35,4 +35,4 @@ Or only for operation running on the GPU:
 java -jar target/benchmarks3.jar clij -rf csv
 ```
 
-[Back to CLIJ documentaion](https://clij.github.io)/
+[Back to CLIJ documentation](https://clij.github.io)
