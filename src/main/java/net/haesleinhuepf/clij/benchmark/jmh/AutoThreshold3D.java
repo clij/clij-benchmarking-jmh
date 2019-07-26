@@ -8,18 +8,19 @@ import ij.process.ByteProcessor;
 import net.haesleinhuepf.clij.clearcl.ClearCLBuffer;
 import org.openjdk.jmh.annotations.Benchmark;
 
-public class AutoThreshold3D extends AbstractBenchmark {
-    @Benchmark
+public class AutoThreshold3D extends AbstractBenchmark implements BinaryImageBenchmark {
+    /*@Benchmark
     public Object ij(Images images) {
         ImagePlus imp3D = images.getImp3Da();
-
         AutoThresholder autoThresholder = new AutoThresholder();
         int[] histogram = imp3D.getStatistics().histogram;
         int threshold = autoThresholder.getThreshold(AutoThresholder.Method.Default, histogram);
         IJ.setThreshold(imp3D, threshold, Integer.MAX_VALUE);
+        imp3D.show();
         new Thresholder().run("mask");
+        imp3D.hide();
         return imp3D;
-    }
+    }*/
 
     @Benchmark
     public Object clij(CLImages images) {
