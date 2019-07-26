@@ -33,6 +33,9 @@ public class AbstractBenchmark {
         float getRadiusF() {
             return radius;
         }
+        public void setRadius(int radius) {
+            this.radius = radius;
+        }
     }
     @State(Scope.Benchmark)
     public static class Images {
@@ -52,6 +55,26 @@ public class AbstractBenchmark {
         ImagePlus imp2Dbinaryb;
         ImagePlus imp3Dbinarya;
         ImagePlus imp3Dbinaryb;
+
+        public void set2DImage(ImagePlus imp) {
+            imp2Da = new Duplicator().run(imp);
+            imp2Db = new Duplicator().run(imp);
+            imp2Dc = new Duplicator().run(imp);
+        }
+        public void set2DBinaryImage(ImagePlus imp) {
+            imp2Dbinarya = new Duplicator().run(imp);
+            imp2Dbinaryb = new Duplicator().run(imp);
+        }
+        public void set3DImage(ImagePlus imp) {
+            imp3Da = new Duplicator().run(imp, 1, imp.getNSlices());
+            imp3Db = new Duplicator().run(imp, 1, imp.getNSlices());
+            imp3Dc = new Duplicator().run(imp, 1, imp.getNSlices());
+        }
+        public void set3DBinaryImage(ImagePlus imp) {
+            imp3Dbinarya = new Duplicator().run(imp, 1, imp.getNSlices());
+            imp3Dbinaryb = new Duplicator().run(imp, 1, imp.getNSlices());
+        }
+
         //ImageProcessor getImage2D() {
             //return imp2Da.getProcessor().duplicate();
         //}
@@ -180,7 +203,11 @@ public class AbstractBenchmark {
             @Override
         @Setup(Level.Invocation)
         public void setup() {
-            super.setup();
+                super.setup();
+                reinit();
+        }
+
+        public void reinit() {
             //System.out.println("cl setup");
             clij = CLIJ.getInstance();
             System.out.println("GPU: " + clij.getGPUName());
