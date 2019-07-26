@@ -7,7 +7,7 @@ import ij.plugin.filter.Binary;
 import net.haesleinhuepf.clij.clearcl.ClearCLBuffer;
 import org.openjdk.jmh.annotations.Benchmark;
 
-public class Erode2D extends AbstractBenchmark {
+public class Erode2D extends AbstractBenchmark implements BinaryImageBenchmark {
     @Benchmark
     public Object ij(Images images) {
         ImagePlus imp2D = images.getImp2DBinarya();

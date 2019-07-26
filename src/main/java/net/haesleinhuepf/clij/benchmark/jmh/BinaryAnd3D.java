@@ -4,7 +4,7 @@ import ij.plugin.ImageCalculator;
 import net.haesleinhuepf.clij.clearcl.ClearCLBuffer;
 import org.openjdk.jmh.annotations.Benchmark;
 
-public class BinaryAnd3D extends AbstractBenchmark {
+public class BinaryAnd3D extends AbstractBenchmark implements BinaryImageBenchmark {
     @Benchmark
     public Object ij(Images images) {
         ImageCalculator ic = new ImageCalculator();

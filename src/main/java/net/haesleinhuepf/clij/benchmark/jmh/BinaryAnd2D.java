@@ -9,7 +9,7 @@ import ij.process.ByteProcessor;
 import net.haesleinhuepf.clij.clearcl.ClearCLBuffer;
 import org.openjdk.jmh.annotations.Benchmark;
 
-public class BinaryAnd2D extends AbstractBenchmark {
+public class BinaryAnd2D extends AbstractBenchmark implements BinaryImageBenchmark {
     @Benchmark
     public Object ij(Images images) {
         ImageCalculator ic = new ImageCalculator();
