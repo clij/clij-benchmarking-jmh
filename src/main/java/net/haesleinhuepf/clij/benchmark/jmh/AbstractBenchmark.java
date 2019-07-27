@@ -9,6 +9,7 @@ import ij.plugin.filter.GaussianBlur;
 import ij.plugin.filter.RankFilters;
 import net.haesleinhuepf.clij.CLIJ;
 import net.haesleinhuepf.clij.clearcl.ClearCLBuffer;
+import net.haesleinhuepf.clij.coremem.rgc.RessourceCleaner;
 import org.openjdk.jmh.annotations.*;
 
 import java.io.File;
@@ -19,7 +20,7 @@ import java.util.concurrent.TimeUnit;
 @Warmup(iterations = 10, time = 1, timeUnit = TimeUnit.SECONDS)
 @Measurement(iterations = 10, time = 1, timeUnit = TimeUnit.SECONDS)
 @State(Scope.Benchmark)
-@Fork(value = 1, jvmArgs = {"-server", "-Xms4G", "-Xmx4G"})
+@Fork(value = 1, jvmArgs = {"-server", "-Xms2G", "-Xmx2G"})
 public class AbstractBenchmark {
     private static final int DEFAULT_THREADS = Prefs.getThreads();
     private RankFilters rankFilters = new RankFilters();
@@ -208,9 +209,11 @@ public class AbstractBenchmark {
         }
 
         public void reinit() {
+            tearDown();
             //System.out.println("cl setup");
-            clij = CLIJ.getInstance();
+            clij = CLIJ.getInstance("1070");
             System.out.println("GPU: " + clij.getGPUName());
+            System.out.println("Number of registered objects: " + RessourceCleaner.getNumberOfRegisteredObjects());
 
             buffer2Da = clij.convert(imp2Da, ClearCLBuffer.class);
             buffer2Db = clij.convert(imp2Db, ClearCLBuffer.class);
@@ -229,17 +232,38 @@ public class AbstractBenchmark {
         @TearDown(Level.Invocation)
         public void tearDown() {
             //System.out.println("cl teardown");
-            buffer2Da.close();
-            buffer2Db.close();
-            buffer2Dc.close();
-            buffer3Da.close();
-            buffer3Db.close();
-            buffer3Dc.close();
+            buffer2Da = clearIfNotNull(buffer2Da);
+            buffer2Db = clearIfNotNull(buffer2Db);
+            buffer2Dc = clearIfNotNull(buffer2Dc);
+            buffer3Da = clearIfNotNull(buffer3Da);
+            buffer3Db = clearIfNotNull(buffer3Db);
+            buffer3Dc = clearIfNotNull(buffer3Dc);
 
-            imp2Dbinarya.close();
-            imp2Dbinaryb.close();
-            imp3Dbinarya.close();
-            imp3Dbinaryb.close();
+            buffer2DBinarya = clearIfNotNull(buffer2DBinarya);
+            buffer2DBinaryb = clearIfNotNull(buffer2DBinaryb);
+            buffer3DBinarya = clearIfNotNull(buffer3DBinarya);
+            buffer3DBinaryb = clearIfNotNull(buffer3DBinaryb);
+
+            /*
+            RessourceCleaner.cleanNow();
+            System.gc();
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            System.out.println("Close");
+            */
+        }
+
+        private ClearCLBuffer clearIfNotNull(ClearCLBuffer buffer) {
+            synchronized (this) {
+                if (buffer != null) {
+                    buffer.close();
+                }
+                return null;
+            }
         }
 
         @TearDown
