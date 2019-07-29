@@ -29,7 +29,7 @@ public class AbstractBenchmark {
     private ImagePlus emptyImp = new ImagePlus();
     @State(Scope.Benchmark)
     public static class Radius {
-        @Param({"2"/*, "10"*/})
+        @Param({"2", "4", "6", "10"})
         int radius;
         float getRadiusF() {
             return radius;
@@ -42,8 +42,8 @@ public class AbstractBenchmark {
     public static class Images {
         // Use a single pixel for testing the clijNoOp
 //@Param({"1"})
-        //@Param({"1", "512", "1024", "2048", "4096"})
-        @Param({"4096"/*, "2048"*/})
+        @Param({"1", "512", "1024", "2048"})
+        //@Param({"4096"/*, "2048"*/})
         int size;
 
         ImagePlus imp2Da;
@@ -139,6 +139,12 @@ public class AbstractBenchmark {
             IJ.run(imp3Dbinarya, "Convert to Mask", "method=Default background=Dark black");
             imp3Dbinaryb = new Duplicator().run(imp3Dbinarya);
 
+        }
+
+
+        @TearDown(Level.Invocation)
+        public void teardown() {
+            IJ.run("Close All");
         }
 
         private void checkExistingFile(int sizeXY, int sizeZ, String filename) {
