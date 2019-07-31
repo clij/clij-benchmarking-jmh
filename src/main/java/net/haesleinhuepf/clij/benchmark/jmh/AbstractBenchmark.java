@@ -127,7 +127,7 @@ public class AbstractBenchmark {
             checkExistingFile(size, 1, filename1);
 
             String filename10 = "./random_" + size + "_" + size + "_10.tif";
-            checkExistingFile(size, 10, filename10);
+            checkExistingFile(size, 50, filename10);
 
             imp2Da = IJ.openImage(filename1);
             imp2Db = new Duplicator().run(imp2Da);
