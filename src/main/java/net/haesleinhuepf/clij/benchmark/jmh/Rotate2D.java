@@ -10,6 +10,7 @@ import ij.process.FloatProcessor;
 import ij.process.ShortProcessor;
 import mpicbg.ij.integral.Mean;
 import net.haesleinhuepf.clij.clearcl.ClearCLBuffer;
+import net.haesleinhuepf.clij.ops.CLIJ_rotateLeft.CLIJ_rotateLeft;
 import net.haesleinhuepf.clij.utilities.CLIJUtilities;
 import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.Scope;
@@ -44,4 +45,13 @@ public class Rotate2D extends AbstractBenchmark {
         return imp2D;
     }
 
+    @Benchmark
+    public Object ijOpsCLIJ(IJ2CLImages images) {
+        ClearCLBuffer clb2Da = images.getCLImage2Da();
+        ClearCLBuffer clb2Dc = images.getCLImage2Dc();
+
+        images.getOpService().run(CLIJ_rotateLeft.class, clb2Dc, clb2Da);
+
+        return clb2Dc;
+    }
 }

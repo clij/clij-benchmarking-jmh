@@ -3,18 +3,17 @@ package net.haesleinhuepf.clij.benchmark.imagecomparison;
 import ij.IJ;
 import ij.ImagePlus;
 import ij.gui.NewImage;
-import ij.gui.PolygonRoi;
 import ij.gui.Roi;
 import ij.plugin.Duplicator;
-import ij.plugin.Scaler;
 import ij.process.ImageStatistics;
 import net.haesleinhuepf.clij.CLIJ;
 import net.haesleinhuepf.clij.benchmark.jmh.*;
 import net.haesleinhuepf.clij.clearcl.ClearCLBuffer;
+import net.imglib2.RandomAccessibleInterval;
+import net.imglib2.img.Img;
+import net.imglib2.img.display.imagej.ImageJFunctions;
 import net.imglib2.realtransform.AffineTransform2D;
-import net.imglib2.realtransform.AffineTransform3D;
 
-import java.awt.geom.AffineTransform;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -91,7 +90,7 @@ public class ImageComparison {
         long scaleFactor = 10;
 
         for (AbstractBenchmark benchmark : benchmarks) {
-            System.out.println(benchmark.getClass().getSimpleName());
+            System.out.println("--------------" + benchmark.getClass().getSimpleName());
 
             StringBuilder headline = new StringBuilder();
             headline.append("<tr><td>" + benchmark.getClass().getSimpleName() + "</td>");
@@ -104,6 +103,7 @@ public class ImageComparison {
 
             for (Method method : benchmark.getClass().getMethods()) {
                 String methodname = method.getName();
+                System.out.println(methodname);
                 if (
                         methodname.startsWith("clij") ||
                         methodname.startsWith("mpicbg") ||
@@ -116,7 +116,17 @@ public class ImageComparison {
 
                     AbstractBenchmark.Radius radius = new AbstractBenchmark.Radius();
                     radius.setRadius(2);
-                    AbstractBenchmark.CLImages images = new AbstractBenchmark.CLImages();
+                    final AbstractBenchmark.Images images;
+                    if(methodname.startsWith("ijOps")) {
+                        if(methodname.startsWith("ijOpsCLIJ")) {
+                            images = new AbstractBenchmark.IJ2CLImages();
+                        } else {
+                            images = new AbstractBenchmark.ImgLib2Images();
+                        }
+                    }
+                    else {
+                        images = new AbstractBenchmark.CLImages();
+                    }
                     images.set2DImage(imp2D);
                     images.set2DBinaryImage(imp2DBinary);
                     images.set3DImage(imp3D);
@@ -135,6 +145,8 @@ public class ImageComparison {
                             impResult = (ImagePlus) result;
                         } else if (result instanceof ClearCLBuffer) {
                             impResult = CLIJ.getInstance().pull((ClearCLBuffer) result);
+                        }else if (result instanceof RandomAccessibleInterval) {
+	                        impResult = ImageJFunctions.wrap((RandomAccessibleInterval)result, "result");
                         }
                         if (impResult != null) {
                             if (impResult.getNSlices() > 1) {

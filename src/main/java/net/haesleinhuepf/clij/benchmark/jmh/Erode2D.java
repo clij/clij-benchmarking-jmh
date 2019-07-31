@@ -2,9 +2,12 @@ package net.haesleinhuepf.clij.benchmark.jmh;
 
 import ij.IJ;
 import ij.ImagePlus;
-import ij.gui.WaitForUserDialog;
 import ij.plugin.filter.Binary;
 import net.haesleinhuepf.clij.clearcl.ClearCLBuffer;
+import net.haesleinhuepf.clij.ops.CLIJ_erodeBox.CLIJ_erodeBox;
+import net.imglib2.algorithm.neighborhood.CenteredRectangleShape;
+import net.imglib2.algorithm.neighborhood.HyperSphereShape;
+import net.imglib2.img.Img;
 import org.openjdk.jmh.annotations.Benchmark;
 
 public class Erode2D extends AbstractBenchmark implements BinaryImageBenchmark {
@@ -38,5 +41,29 @@ public class Erode2D extends AbstractBenchmark implements BinaryImageBenchmark {
         ImagePlus imp2D = images.getImp2DBinarya();
         IJ.run(imp2D, "Erode", "");
         return imp2D;
+    }
+
+    @Benchmark
+    public Object ijOps_sphere(ImgLib2Images images) {
+        Img img2Dbinarya = images.getImg2Dbinarya();
+        Img img2Dbinaryb = images.getImg2Dbinaryb();
+        images.getOpService().morphology().erode(img2Dbinaryb, img2Dbinarya, new HyperSphereShape(1));
+        return img2Dbinaryb;
+    }
+
+    @Benchmark
+    public Object ijOps_box(ImgLib2Images images) {
+        Img img2Dbinarya = images.getImg2Dbinarya();
+        Img img2Dbinaryb = images.getImg2Dbinaryb();
+        images.getOpService().morphology().erode(img2Dbinaryb, img2Dbinarya, new CenteredRectangleShape(new int[]{1,1}, false));
+        return img2Dbinaryb;
+    }
+
+    @Benchmark
+    public Object ijOpsCLIJ_box(IJ2CLImages images) {
+        ClearCLBuffer clb2Da = images.getCLImage2DBinarya();
+        ClearCLBuffer clb2Dc = images.getCLImage2Dc();
+        images.getOpService().run(CLIJ_erodeBox.class, clb2Dc, clb2Da);
+        return clb2Dc;
     }
 }
