@@ -66,7 +66,7 @@ public class Minimum2D extends AbstractBenchmark {
         Object img2Da = images.getCLImage2Da();
         Object img2Dc = images.getCLImage2Dc();
         int rad = (int)radius.getRadiusF();
-        images.getOpService().run(CLIJ_minimumBox.class, img2Dc, img2Da, rad, rad, rad);
+        images.getOpService().run(CLIJ_minimumBox.class, img2Dc, img2Da, rad, rad, 0);
         return img2Dc;
     }
 }

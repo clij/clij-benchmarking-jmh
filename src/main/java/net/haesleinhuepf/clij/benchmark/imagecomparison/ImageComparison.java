@@ -146,7 +146,7 @@ public class ImageComparison {
                         } else if (result instanceof ClearCLBuffer) {
                             impResult = CLIJ.getInstance().pull((ClearCLBuffer) result);
                         }else if (result instanceof RandomAccessibleInterval) {
-	                        impResult = ImageJFunctions.wrap((RandomAccessibleInterval)result, "result");
+	                        impResult = new Duplicator().run(ImageJFunctions.wrap((RandomAccessibleInterval)result, "result"));
                         }
                         if (impResult != null) {
                             if (impResult.getNSlices() > 1) {

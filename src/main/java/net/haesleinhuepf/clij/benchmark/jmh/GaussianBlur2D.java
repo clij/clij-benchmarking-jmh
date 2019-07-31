@@ -47,7 +47,7 @@ public class GaussianBlur2D extends AbstractBenchmark {
         Object img2Da = images.getCLImage3Da();
         Object img2Dc = images.getCLImage3Dc();
         Float sigma = radius.getRadiusF();
-        images.getOpService().run(CLIJ_blur.class, img2Dc, img2Da, sigma, sigma, sigma);
+        images.getOpService().run(CLIJ_blur.class, img2Dc, img2Da, sigma, sigma, 0);
         return img2Dc;
     }
 }
