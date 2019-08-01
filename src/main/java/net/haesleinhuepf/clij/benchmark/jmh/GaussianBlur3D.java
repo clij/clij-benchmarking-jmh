@@ -2,8 +2,9 @@ package net.haesleinhuepf.clij.benchmark.jmh;
 
 import ij.IJ;
 import ij.ImagePlus;
-import ij.plugin.filter.GaussianBlur;
 import net.haesleinhuepf.clij.clearcl.ClearCLBuffer;
+import net.haesleinhuepf.clij.ops.CLIJ_blur.CLIJ_blur;
+import net.imglib2.img.Img;
 import org.openjdk.jmh.annotations.Benchmark;
 
 public class GaussianBlur3D extends AbstractBenchmark {
@@ -30,5 +31,23 @@ public class GaussianBlur3D extends AbstractBenchmark {
         Float sigma = radius.getRadiusF();
         IJ.run(imp3D, "Gaussian Blur 3D...", "x=" + sigma + " y=" + sigma + " z=" + sigma);
         return imp3D;
+    }
+
+    @Benchmark
+    public Object ijOps(ImgLib2Images images, Radius radius) {
+        Img img3Da = images.getImg3Da();
+        Img img3Dc = images.getImg3Dc();
+        Float sigma = radius.getRadiusF();
+        images.getOpService().filter().gauss(img3Dc, img3Da, sigma);
+        return img3Dc;
+    }
+
+    @Benchmark
+    public Object ijOpsCLIJ(IJ2CLImages images, Radius radius) {
+        Object img3Da = images.getCLImage3Da();
+        Object img3Dc = images.getCLImage3Dc();
+        Float sigma = radius.getRadiusF();
+        images.getOpService().run(CLIJ_blur.class, img3Dc, img3Da, sigma, sigma, sigma);
+        return img3Dc;
     }
 }

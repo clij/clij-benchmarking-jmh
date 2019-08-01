@@ -8,11 +8,20 @@ import ij.plugin.Duplicator;
 import ij.plugin.filter.GaussianBlur;
 import ij.plugin.filter.RankFilters;
 import net.haesleinhuepf.clij.CLIJ;
+import net.haesleinhuepf.clij.CLIJService;
 import net.haesleinhuepf.clij.clearcl.ClearCLBuffer;
 import net.haesleinhuepf.clij.coremem.rgc.RessourceCleaner;
+import net.imagej.ops.OpService;
+import net.imglib2.RandomAccessibleInterval;
+import net.imglib2.img.Img;
+import net.imglib2.img.display.imagej.ImageJFunctions;
+import net.imglib2.view.Views;
 import org.openjdk.jmh.annotations.*;
+import org.scijava.Context;
+import org.scijava.io.IOService;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 @BenchmarkMode(Mode.AverageTime)
@@ -143,7 +152,7 @@ public class AbstractBenchmark {
 
 
         @TearDown(Level.Invocation)
-        public void teardown() {
+        public void tearDown() {
             IJ.run("Close All");
         }
 
@@ -154,8 +163,9 @@ public class AbstractBenchmark {
                 IJ.save(imp, filename);
             }
         }
-    }
 
+        public void reinit(){};
+    }
 
         @State(Scope.Benchmark)
     public static class CLImages extends Images {
@@ -214,10 +224,12 @@ public class AbstractBenchmark {
                 reinit();
         }
 
+        @Override
         public void reinit() {
             tearDown();
             //System.out.println("cl setup");
-            clij = CLIJ.getInstance("1070");
+            clij = CLIJ.getInstance("");
+//            clij = CLIJ.getInstance("Intel");
             System.out.println("GPU: " + clij.getGPUName());
             System.out.println("Number of registered objects: " + RessourceCleaner.getNumberOfRegisteredObjects());
 
@@ -237,6 +249,7 @@ public class AbstractBenchmark {
 
         @TearDown(Level.Invocation)
         public void tearDown() {
+            super.tearDown();
             //System.out.println("cl teardown");
             buffer2Da = clearIfNotNull(buffer2Da);
             buffer2Db = clearIfNotNull(buffer2Db);
@@ -278,6 +291,102 @@ public class AbstractBenchmark {
             clij.close();
         }
     }
+
+    @State(Scope.Benchmark)
+    public static class ImgLib2Images extends Images {
+
+        Img img2Da;
+        Img img2Db;
+        Img img2Dc;
+        Img img3Da;
+        Img img3Db;
+        Img img3Dc;
+        Img img2Dbinarya;
+        Img img2Dbinaryb;
+        Img img3Dbinarya;
+        Img img3Dbinaryb;
+
+        OpService opService;
+
+        Img getImg2Da() { return img2Da; }
+        Img getImg2Db() { return img2Db; }
+        Img getImg2Dc() { return img2Dc; }
+        Img getImg3Da() { return img3Da; }
+        Img getImg3Db() { return img3Db; }
+        Img getImg3Dc() { return img3Dc; }
+        Img getImg2Dbinarya() { return img2Dbinarya; }
+        Img getImg2Dbinaryb() { return img2Dbinaryb; }
+        Img getImg3Dbinarya() { return img3Dbinarya; }
+        Img getImg3Dbinaryb() { return img3Dbinaryb; }
+
+        @Setup(Level.Invocation)
+        public void setup() {
+
+            super.setup();
+
+            reinit();
+
+        }
+
+        @Override
+        public void reinit() {
+
+            Context context = new Context(OpService.class);
+            opService = context.service(OpService.class);
+
+            img2Da = ImageJFunctions.wrap(imp2Da).copy();
+            img2Db = ImageJFunctions.wrap(imp2Db).copy();
+            img2Dc = ImageJFunctions.wrap(imp2Dc).copy();
+
+            img3Da = ImageJFunctions.wrap(imp3Da).copy();
+            img3Db = ImageJFunctions.wrap(imp3Db).copy();
+            img3Dc = ImageJFunctions.wrap(imp3Dc).copy();
+
+            img2Dbinarya = opService.convert().bit(Views.iterable((RandomAccessibleInterval)ImageJFunctions.wrap(imp2Dbinarya))).copy();
+            img2Dbinaryb = opService.convert().bit(Views.iterable((RandomAccessibleInterval)ImageJFunctions.wrap(imp2Dbinaryb))).copy();
+            img3Dbinarya = opService.convert().bit(Views.iterable((RandomAccessibleInterval)ImageJFunctions.wrap(imp3Dbinarya))).copy();
+            img3Dbinaryb = opService.convert().bit(Views.iterable((RandomAccessibleInterval)ImageJFunctions.wrap(imp3Dbinaryb))).copy();
+
+        }
+
+        public OpService getOpService() {
+            return opService;
+        }
+
+        @TearDown(Level.Invocation)
+        public void teardown() {
+            super.tearDown();
+        }
+    }
+
+    @State(Scope.Benchmark)
+    public static class IJ2CLImages extends CLImages {
+
+        OpService opService;
+
+        @Setup(Level.Invocation)
+        public void setup() {
+
+            super.setup();
+
+            reinit();
+
+        }
+
+        @Override
+        public void reinit() {
+            super.reinit();
+            Context context = new Context(OpService.class, CLIJService.class);
+            opService = context.service(OpService.class);
+        }
+
+        public OpService getOpService() {
+            return opService;
+        }
+
+    }
+
+
 /*
     @Benchmark
     public Object ijNoOp() {

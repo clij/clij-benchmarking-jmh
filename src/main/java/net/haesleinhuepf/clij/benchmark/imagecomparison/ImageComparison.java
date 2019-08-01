@@ -3,24 +3,28 @@ package net.haesleinhuepf.clij.benchmark.imagecomparison;
 import ij.IJ;
 import ij.ImagePlus;
 import ij.gui.NewImage;
-import ij.gui.PolygonRoi;
 import ij.gui.Roi;
 import ij.plugin.Duplicator;
-import ij.plugin.Scaler;
 import ij.process.ImageStatistics;
 import net.haesleinhuepf.clij.CLIJ;
 import net.haesleinhuepf.clij.benchmark.jmh.*;
 import net.haesleinhuepf.clij.clearcl.ClearCLBuffer;
+import net.imagej.ops.OpService;
+import net.imglib2.RandomAccessibleInterval;
+import net.imglib2.img.Img;
+import net.imglib2.img.display.imagej.ImageJFunctions;
 import net.imglib2.realtransform.AffineTransform2D;
-import net.imglib2.realtransform.AffineTransform3D;
+import net.imglib2.type.numeric.RealType;
+import net.imglib2.util.Pair;
 
-import java.awt.geom.AffineTransform;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Arrays;
+import java.util.Comparator;
 
 
 public class ImageComparison {
@@ -91,7 +95,7 @@ public class ImageComparison {
         long scaleFactor = 10;
 
         for (AbstractBenchmark benchmark : benchmarks) {
-            System.out.println(benchmark.getClass().getSimpleName());
+            System.out.println("--------------" + benchmark.getClass().getSimpleName());
 
             StringBuilder headline = new StringBuilder();
             headline.append("<tr><td>" + benchmark.getClass().getSimpleName() + "</td>");
@@ -102,8 +106,11 @@ public class ImageComparison {
             StringBuilder statsline = new StringBuilder();
             statsline.append("<tr><td>&nbsp;</td>");
 
-            for (Method method : benchmark.getClass().getMethods()) {
+            Method[] methods = Arrays.copyOf(benchmark.getClass().getMethods(), benchmark.getClass().getMethods().length);
+            Arrays.sort(methods, Comparator.comparing(Method::getName));
+            for (Method method : methods) {
                 String methodname = method.getName();
+                System.out.println(methodname);
                 if (
                         methodname.startsWith("clij") ||
                         methodname.startsWith("mpicbg") ||
@@ -116,7 +123,17 @@ public class ImageComparison {
 
                     AbstractBenchmark.Radius radius = new AbstractBenchmark.Radius();
                     radius.setRadius(2);
-                    AbstractBenchmark.CLImages images = new AbstractBenchmark.CLImages();
+                    final AbstractBenchmark.Images images;
+                    if(methodname.startsWith("ijOps")) {
+                        if(methodname.startsWith("ijOpsCLIJ")) {
+                            images = new AbstractBenchmark.IJ2CLImages();
+                        } else {
+                            images = new AbstractBenchmark.ImgLib2Images();
+                        }
+                    }
+                    else {
+                        images = new AbstractBenchmark.CLImages();
+                    }
                     images.set2DImage(imp2D);
                     images.set2DBinaryImage(imp2DBinary);
                     images.set3DImage(imp3D);
@@ -135,6 +152,8 @@ public class ImageComparison {
                             impResult = (ImagePlus) result;
                         } else if (result instanceof ClearCLBuffer) {
                             impResult = CLIJ.getInstance().pull((ClearCLBuffer) result);
+                        }else if (result instanceof RandomAccessibleInterval && ((RandomAccessibleInterval)result).numDimensions() <= 2) {
+                            impResult = new Duplicator().run(ImageJFunctions.wrap((RandomAccessibleInterval)result, "result"));
                         }
                         if (impResult != null) {
                             if (impResult.getNSlices() > 1) {
@@ -175,6 +194,21 @@ public class ImageComparison {
                             String filename = benchmark.getClass().getSimpleName() + "." + methodname + ".png";
                             IJ.save(impResult, foldername + filename);
                             contentline.append("<td><img src=\"" + filename + "\" width=\"100\"></td>");
+                        } else if (result instanceof RandomAccessibleInterval) {
+                            OpService ops = ((AbstractBenchmark.ImgLib2Images) images).getOpService();
+                            Img rai = (Img) result;
+                            Pair minmax = ops.stats().minMax(rai);
+                            RealType mean = ops.stats().mean(rai);
+                            RealType stdDev = ops.stats().stdDev(rai);
+
+	                        contentline.append("<td>no image</td>");
+
+                            statsline.append("<td>");
+                            statsline.append("Mean: " + mean);
+                            statsline.append("<br/>Std: " + stdDev);
+                            statsline.append("<br/>Min: " + minmax.getA());
+                            statsline.append("<br/>Max: " + minmax.getB());
+                            statsline.append("</td>");
                         } else {
                             contentline.append("<td>no image</td>");
                             statsline.append("<td></td>");

@@ -13,6 +13,7 @@ import ij.plugin.filter.PlugInFilter;
 import ij.process.ColorProcessor;
 import ij.process.ImageProcessor;
 import net.haesleinhuepf.clij.clearcl.ClearCLBuffer;
+import net.haesleinhuepf.clij.ops.CLIJ_radialProjection.CLIJ_radialProjection;
 import org.openjdk.jmh.annotations.Benchmark;
 
 import java.awt.*;
@@ -299,6 +300,19 @@ public class RadialReslice extends AbstractBenchmark {
         }
 
 
+    }
+
+    @Benchmark
+    public Object ijOpsCLIJ(IJ2CLImages images) {
+        ClearCLBuffer clb3Da = images.getCLImage3Da();
+
+        int numberOfAngles = 360;
+        float angleStepSize = 1.0f;
+        ClearCLBuffer clb3Dc = (ClearCLBuffer) images.getOpService().run(CLIJ_radialProjection.class, clb3Da, numberOfAngles, angleStepSize);
+
+        clb3Dc.close();
+
+        return null;
     }
 
 }

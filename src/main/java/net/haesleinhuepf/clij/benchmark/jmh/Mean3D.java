@@ -5,15 +5,14 @@ import ij.ImagePlus;
 import ij.ImageStack;
 import ij.Prefs;
 import ij.plugin.Filters3D;
-import ij.plugin.filter.RankFilters;
-import ij.process.ByteProcessor;
-import ij.process.ColorProcessor;
-import ij.process.FloatProcessor;
-import ij.process.ShortProcessor;
 import mcib3d.image3d.processing.FastFilters3D;
-import mpicbg.ij.integral.Mean;
 import net.haesleinhuepf.clij.clearcl.ClearCLBuffer;
+import net.haesleinhuepf.clij.ops.CLIJ_meanBox.CLIJ_meanBox;
+import net.haesleinhuepf.clij.ops.CLIJ_meanSphere.CLIJ_meanSphere;
 import net.haesleinhuepf.clij.utilities.CLIJUtilities;
+import net.imglib2.algorithm.neighborhood.CenteredRectangleShape;
+import net.imglib2.algorithm.neighborhood.HyperSphereShape;
+import net.imglib2.img.Img;
 import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.Scope;
 import org.openjdk.jmh.annotations.State;
@@ -116,5 +115,41 @@ public class Mean3D extends AbstractBenchmark {
         int rad = (int)radius.getRadiusF();
         ImageStack res = FastFilters3D.filterImageStack(imp.getImageStack(), FastFilters3D.MEAN, rad, rad, rad, Runtime.getRuntime().availableProcessors(), false);
         return new ImagePlus("filtered", res);
+    }
+
+    @Benchmark
+    public Object ijOps_box(ImgLib2Images images, Radius radius) {
+        Img img3Da = images.getImg3Da();
+        Img img3Dc = images.getImg3Dc();
+        int rad = (int)radius.getRadiusF();
+        images.getOpService().filter().mean(img3Dc, img3Da, new CenteredRectangleShape(new int[]{rad, rad, rad}, false));
+        return img3Dc;
+    }
+
+    @Benchmark
+    public Object ijOps_sphere(ImgLib2Images images, Radius radius) {
+        Img img3Da = images.getImg3Da();
+        Img img3Dc = images.getImg3Dc();
+        int rad = (int)radius.getRadiusF();
+        images.getOpService().filter().mean(img3Dc, img3Da, new HyperSphereShape(rad));
+        return img3Dc;
+    }
+
+    @Benchmark
+    public Object ijOpsCLIJ_box(IJ2CLImages images, Radius radius) {
+        Object img3Da = images.getCLImage3Da();
+        Object img3Dc = images.getCLImage3Dc();
+        int rad = (int)radius.getRadiusF();
+        images.getOpService().run(CLIJ_meanBox.class, img3Dc, img3Da, rad, rad, rad);
+        return img3Dc;
+    }
+
+    @Benchmark
+    public Object ijOpsCLIJ_sphere(IJ2CLImages images, Radius radius) {
+        Object img3Da = images.getCLImage3Da();
+        Object img3Dc = images.getCLImage3Dc();
+        int rad = (int)radius.getRadiusF();
+        images.getOpService().run(CLIJ_meanSphere.class, img3Dc, img3Da, rad, rad, rad);
+        return img3Dc;
     }
 }

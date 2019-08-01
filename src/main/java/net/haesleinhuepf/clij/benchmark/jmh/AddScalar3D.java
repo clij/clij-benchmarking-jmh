@@ -3,6 +3,11 @@ package net.haesleinhuepf.clij.benchmark.jmh;
 import ij.IJ;
 import ij.ImagePlus;
 import net.haesleinhuepf.clij.clearcl.ClearCLBuffer;
+import net.haesleinhuepf.clij.ops.CLIJ_addImageAndScalar.CLIJ_addImageAndScalar;
+import net.imglib2.RandomAccessibleInterval;
+import net.imglib2.img.Img;
+import net.imglib2.type.numeric.RealType;
+import net.imglib2.view.Views;
 import org.openjdk.jmh.annotations.Benchmark;
 
 public class AddScalar3D extends AbstractBenchmark {
@@ -30,5 +35,24 @@ public class AddScalar3D extends AbstractBenchmark {
         ImagePlus imp3D = images.getImp3Da();
         IJ.run(imp3D, "Add...", "value=1 stack");
         return imp3D;
+    }
+
+    @Benchmark
+    public <T extends RealType> Object ijOps(ImgLib2Images images) {
+        RandomAccessibleInterval<T> img3Da = images.getImg3Da();
+        RandomAccessibleInterval<T> img3Dc = images.getImg3Dc();
+        T val = (T) ((Img<T>) img3Da).firstElement().copy();
+        val.setReal(1);
+        images.getOpService().math().add(Views.iterable(img3Dc), Views.iterable(img3Da), val);
+        return img3Dc;
+    }
+
+    @Benchmark
+    public Object ijOpsCLIJ(IJ2CLImages images) {
+        ClearCLBuffer clb3Da = images.getCLImage3Da();
+        ClearCLBuffer clb3Dc = images.getCLImage3Dc();
+
+        images.getOpService().run(CLIJ_addImageAndScalar.class, clb3Dc, clb3Da, 1f);
+        return clb3Dc;
     }
 }
