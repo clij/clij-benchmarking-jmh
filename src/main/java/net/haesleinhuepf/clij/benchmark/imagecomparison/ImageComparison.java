@@ -9,10 +9,13 @@ import ij.process.ImageStatistics;
 import net.haesleinhuepf.clij.CLIJ;
 import net.haesleinhuepf.clij.benchmark.jmh.*;
 import net.haesleinhuepf.clij.clearcl.ClearCLBuffer;
+import net.imagej.ops.OpService;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.img.Img;
 import net.imglib2.img.display.imagej.ImageJFunctions;
 import net.imglib2.realtransform.AffineTransform2D;
+import net.imglib2.type.numeric.RealType;
+import net.imglib2.util.Pair;
 
 import java.io.File;
 import java.io.IOException;
@@ -149,8 +152,8 @@ public class ImageComparison {
                             impResult = (ImagePlus) result;
                         } else if (result instanceof ClearCLBuffer) {
                             impResult = CLIJ.getInstance().pull((ClearCLBuffer) result);
-                        }else if (result instanceof RandomAccessibleInterval) {
-	                        impResult = new Duplicator().run(ImageJFunctions.wrap((RandomAccessibleInterval)result, "result"));
+                        }else if (result instanceof RandomAccessibleInterval && ((RandomAccessibleInterval)result).numDimensions() <= 2) {
+                            impResult = new Duplicator().run(ImageJFunctions.wrap((RandomAccessibleInterval)result, "result"));
                         }
                         if (impResult != null) {
                             if (impResult.getNSlices() > 1) {
@@ -191,6 +194,21 @@ public class ImageComparison {
                             String filename = benchmark.getClass().getSimpleName() + "." + methodname + ".png";
                             IJ.save(impResult, foldername + filename);
                             contentline.append("<td><img src=\"" + filename + "\" width=\"100\"></td>");
+                        } else if (result instanceof RandomAccessibleInterval) {
+                            OpService ops = ((AbstractBenchmark.ImgLib2Images) images).getOpService();
+                            Img rai = (Img) result;
+                            Pair minmax = ops.stats().minMax(rai);
+                            RealType mean = ops.stats().mean(rai);
+                            RealType stdDev = ops.stats().stdDev(rai);
+
+	                        contentline.append("<td>no image</td>");
+
+                            statsline.append("<td>");
+                            statsline.append("Mean: " + mean);
+                            statsline.append("<br/>Std: " + stdDev);
+                            statsline.append("<br/>Min: " + minmax.getA());
+                            statsline.append("<br/>Max: " + minmax.getB());
+                            statsline.append("</td>");
                         } else {
                             contentline.append("<td>no image</td>");
                             statsline.append("<td></td>");
