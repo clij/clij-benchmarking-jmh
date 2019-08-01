@@ -37,7 +37,7 @@ public class MultiplyScalar2D extends AbstractBenchmark {
     public <T extends RealType> Object ijOps(ImgLib2Images images) {
         Img img2Da = images.getImg2Da();
         Img img2Dc = images.getImg2Dc();
-        T val = ((Img<T>) img2Da).firstElement();
+        T val = (T) ((Img<T>) img2Da).firstElement().copy();
         val.setReal(2);
         images.getOpService().math().multiply(Views.iterable(img2Dc), img2Da, val);
         return img2Dc;

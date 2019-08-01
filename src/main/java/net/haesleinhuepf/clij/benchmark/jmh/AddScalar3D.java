@@ -41,7 +41,7 @@ public class AddScalar3D extends AbstractBenchmark {
     public <T extends RealType> Object ijOps(ImgLib2Images images) {
         RandomAccessibleInterval<T> img3Da = images.getImg3Da();
         RandomAccessibleInterval<T> img3Dc = images.getImg3Dc();
-        T val = ((Img<T>) img3Da).firstElement();
+        T val = (T) ((Img<T>) img3Da).firstElement().copy();
         val.setReal(1);
         images.getOpService().math().add(Views.iterable(img3Dc), Views.iterable(img3Da), val);
         return img3Dc;

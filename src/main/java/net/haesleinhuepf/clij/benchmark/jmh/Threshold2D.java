@@ -41,7 +41,7 @@ public class Threshold2D extends AbstractBenchmark implements BinaryImageBenchma
     public <T extends RealType> Object ijOps(ImgLib2Images images) {
         Img img2Da = images.getImg2Da();
         Img img2Dbinarya = images.getImg2Dbinarya();
-        T val = ((Img<T>) img2Da).firstElement();
+        T val = (T) ((Img<T>) img2Da).firstElement().copy();
         val.setReal(128);
         images.getOpService().threshold().apply(img2Dbinarya, img2Da, val);
         return img2Dbinarya;

@@ -38,9 +38,9 @@ public class MultiplyScalar3D extends AbstractBenchmark {
 
     @Benchmark
     public <T extends RealType> Object ijOps(ImgLib2Images images) {
-        Img img3Da = images.getImg2Da();
-        Img img3Dc = images.getImg2Dc();
-        T val = ((Img<T>) img3Da).firstElement();
+        Img img3Da = images.getImg3Da();
+        Img img3Dc = images.getImg3Dc();
+        T val = (T) ((Img<T>) img3Da).firstElement().copy();
         val.setReal(2);
         images.getOpService().math().multiply(Views.iterable(img3Dc), img3Da, val);
         return img3Dc;

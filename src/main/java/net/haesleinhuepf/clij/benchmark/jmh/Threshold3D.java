@@ -34,7 +34,7 @@ public class Threshold3D extends AbstractBenchmark implements BinaryImageBenchma
     public <T extends RealType> Object ijOps(ImgLib2Images images) {
         Img img3Da = images.getImg3Da();
         Img img3Dbinarya = images.getImg3Dbinarya();
-        T val = ((Img<T>) img3Da).firstElement();
+        T val = (T) ((Img<T>) img3Da).firstElement().copy();
         val.setReal(128);
         images.getOpService().threshold().apply(img3Dbinarya, img3Da, val);
         return img3Dbinarya;

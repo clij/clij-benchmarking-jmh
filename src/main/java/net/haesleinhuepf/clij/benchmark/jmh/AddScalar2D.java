@@ -37,7 +37,7 @@ public class AddScalar2D extends AbstractBenchmark {
     public <T extends RealType> Object ijOps(ImgLib2Images images) {
         RandomAccessibleInterval<T> img2Da = images.getImg2Da();
         RandomAccessibleInterval<T> img2Dc = images.getImg2Dc();
-        T val = ((Img<T>) img2Da).firstElement();
+        T val = (T) ((Img<T>) img2Da).firstElement().copy();
         val.setReal(1);
         images.getOpService().math().add(Views.iterable(img2Dc), Views.iterable(img2Da), val);
         return img2Dc;
