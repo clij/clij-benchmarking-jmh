@@ -20,6 +20,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Arrays;
+import java.util.Comparator;
 
 
 public class ImageComparison {
@@ -101,7 +103,9 @@ public class ImageComparison {
             StringBuilder statsline = new StringBuilder();
             statsline.append("<tr><td>&nbsp;</td>");
 
-            for (Method method : benchmark.getClass().getMethods()) {
+            Method[] methods = Arrays.copyOf(benchmark.getClass().getMethods(), benchmark.getClass().getMethods().length);
+            Arrays.sort(methods, Comparator.comparing(Method::getName));
+            for (Method method : methods) {
                 String methodname = method.getName();
                 System.out.println(methodname);
                 if (
