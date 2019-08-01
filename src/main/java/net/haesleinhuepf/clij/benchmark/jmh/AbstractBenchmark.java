@@ -28,6 +28,7 @@ import java.util.concurrent.TimeUnit;
 @OutputTimeUnit(TimeUnit.NANOSECONDS)
 @Warmup(iterations = 10, time = 1, timeUnit = TimeUnit.SECONDS)
 @Measurement(iterations = 10, time = 1, timeUnit = TimeUnit.SECONDS)
+@Timeout(time = 60, timeUnit = TimeUnit.SECONDS)
 @State(Scope.Benchmark)
 @Fork(value = 1, jvmArgs = {"-server", "-Xms2G", "-Xmx2G"})
 public class AbstractBenchmark {
@@ -51,9 +52,25 @@ public class AbstractBenchmark {
     public static class Images {
         // Use a single pixel for testing the clijNoOp
 //@Param({"1"})
-        @Param({"1", "512", "1024", "2048"})
+        @Param({"0", "1", "2", "3", "4"})
         //@Param({"4096"/*, "2048"*/})
         int size;
+
+        int[][] sizes2D = {
+                {1, 1, 1},
+                {512, 512, 1},
+                {1024, 1024, 1},
+                {2048, 2048, 1},
+                {4096, 4096, 1}
+        };
+
+        int[][] sizes3D = {
+                {1, 1, 1},
+                {1024, 1024, 8},
+                {1024, 1024, 16},
+                {1024, 1024, 32},
+                {1024, 1024, 64}
+        };
 
         ImagePlus imp2Da;
         ImagePlus imp2Db;
@@ -123,13 +140,17 @@ public class AbstractBenchmark {
         @Setup(Level.Invocation)
         public void setup() {
             //System.out.println("im setup");
-            String filename1 = "./random_" + size + "_" + size + "_1.tif";
-            checkExistingFile(size, 1, filename1);
 
-            String filename10 = "./random_" + size + "_" + size + "_10.tif";
-            checkExistingFile(size, 10, filename10);
+            int size2D[] = sizes2D[size];
+            int size3D[] = sizes3D[size];
 
-            imp2Da = IJ.openImage(filename1);
+            String filename2D = "./random_" +size2D[0] + "_" + size2D[1] + "_" + size2D[2] + ".tif";
+            checkExistingFile(size2D[0], size2D[1], size2D[2], filename2D);
+
+            String filename3D = "./random_" + size3D[0] + "_" + size3D[1] + "_" + size3D[2] + ".tif";
+            checkExistingFile(size3D[0], size3D[1], size3D[2], filename3D);
+
+            imp2Da = IJ.openImage(filename2D);
             imp2Db = new Duplicator().run(imp2Da);
             imp2Dc = new Duplicator().run(imp2Da);
 
@@ -139,7 +160,7 @@ public class AbstractBenchmark {
             imp2Dbinaryb = new Duplicator().run(imp2Dbinarya);
 
 
-            imp3Da = IJ.openImage(filename10);
+            imp3Da = IJ.openImage(filename3D);
             imp3Db = new Duplicator().run(imp3Da, 1, imp3Da.getNSlices());
             imp3Dc = new Duplicator().run(imp3Da, 1, imp3Da.getNSlices());
 
@@ -156,9 +177,9 @@ public class AbstractBenchmark {
             IJ.run("Close All");
         }
 
-        private void checkExistingFile(int sizeXY, int sizeZ, String filename) {
+        private void checkExistingFile(int sizeX, int sizeY, int sizeZ, String filename) {
             if (!new File(filename).exists()) {
-                ImagePlus imp = NewImage.createByteImage("title", sizeXY, sizeXY, sizeZ,
+                ImagePlus imp = NewImage.createByteImage("title", sizeX, sizeY, sizeZ,
                         NewImage.FILL_RANDOM);
                 IJ.save(imp, filename);
             }
