@@ -251,8 +251,8 @@ public class AbstractBenchmark {
             //System.out.println("cl setup");
             clij = CLIJ.getInstance("");
 //            clij = CLIJ.getInstance("Intel");
-            System.out.println("GPU: " + clij.getGPUName());
-            System.out.println("Number of registered objects: " + RessourceCleaner.getNumberOfRegisteredObjects());
+            //System.out.println("GPU: " + clij.getGPUName());
+            //System.out.println("Number of registered objects: " + RessourceCleaner.getNumberOfRegisteredObjects());
 
             buffer2Da = clij.convert(imp2Da, ClearCLBuffer.class);
             buffer2Db = clij.convert(imp2Db, ClearCLBuffer.class);
