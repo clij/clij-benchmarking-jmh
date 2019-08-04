@@ -12,7 +12,7 @@ import org.openjdk.jmh.annotations.Benchmark;
 
 public class AutoThreshold2D extends AbstractBenchmark implements BinaryImageBenchmark {
     @Benchmark
-    public Object ij(Images images) {
+    public Object ijapi(Images images) {
         ImagePlus imp2D = images.getImp2Da();
         AutoThresholder autoThresholder = new AutoThresholder();
         int[] histogram = imp2D.getStatistics().histogram;

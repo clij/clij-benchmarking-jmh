@@ -72,7 +72,7 @@ public class Mean3D extends AbstractBenchmark {
     }
 
     @Benchmark
-    public Object ij(Images images, Radius radius) {
+    public Object ijapi(Images images, Radius radius) {
         ImagePlus imp3D = images.getImp3Da();
         int rad = (int)radius.getRadiusF();
         imp3D = new ImagePlus("res", Filters3D.filter(imp3D.getStack(), Filters3D.MEAN, rad, rad, rad ));

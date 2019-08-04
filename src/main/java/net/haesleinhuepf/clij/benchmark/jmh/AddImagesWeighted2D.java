@@ -9,7 +9,7 @@ import org.openjdk.jmh.annotations.Benchmark;
 
 public class AddImagesWeighted2D extends AbstractBenchmark {
     @Benchmark
-    public Object ij(Images images) {
+    public Object ijapi(Images images) {
         ImageCalculator ic = new ImageCalculator();
         return ic.run("Add create", images.getImp2Da(), images.getImp2Db());
     }

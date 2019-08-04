@@ -12,7 +12,7 @@ import org.openjdk.jmh.annotations.Benchmark;
 
 public class AddScalar2D extends AbstractBenchmark {
     @Benchmark
-    public Object ij(Images images) {
+    public Object ijapi(Images images) {
         images.getImp2Da().getProcessor().add(1);
         return images.getImp2Da();
     }

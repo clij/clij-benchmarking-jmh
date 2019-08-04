@@ -20,7 +20,7 @@ import java.awt.*;
 
 public class RadialReslice extends AbstractBenchmark {
     @Benchmark
-    public Object ij(Images images) {
+    public Object ijapi(Images images) {
         ImagePlus imp3D = images.getImp3Da();
         imp3D.setRoi(new Line(imp3D.getWidth() / 2, imp3D.getWidth() / 2, 0, 0));
         Radial_Reslice_Copy rr = new Radial_Reslice_Copy();

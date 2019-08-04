@@ -37,7 +37,7 @@ public class Minimum3D extends AbstractBenchmark {
     }
 
     @Benchmark
-    public Object ij(Images images, Radius radius) {
+    public Object ijapi(Images images, Radius radius) {
         ImagePlus imp = images.getImp3Da();
         imp = new ImagePlus("res", Filters3D.filter(imp.getImageStack(), Filters3D.MIN, radius.getRadiusF(), radius.getRadiusF(), radius.getRadiusF()));
         return imp;

@@ -12,7 +12,7 @@ import org.openjdk.jmh.annotations.Benchmark;
 
 public class Erode2D extends AbstractBenchmark implements BinaryImageBenchmark {
     @Benchmark
-    public Object ij(Images images) {
+    public Object ijapi(Images images) {
         ImagePlus imp2D = images.getImp2DBinarya();
         Binary bin = new Binary();
         bin.setup("erode", imp2D);

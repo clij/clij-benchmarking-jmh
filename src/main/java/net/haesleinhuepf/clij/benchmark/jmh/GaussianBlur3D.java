@@ -9,7 +9,7 @@ import org.openjdk.jmh.annotations.Benchmark;
 
 public class GaussianBlur3D extends AbstractBenchmark {
     @Benchmark
-    public Object ij(Images images, Radius radius) {
+    public Object ijapi(Images images, Radius radius) {
         ImagePlus imp3D = images.getImp2Da();
         Float sigma = radius.getRadiusF();
         ij.plugin.GaussianBlur3D.blur(imp3D, sigma, sigma, sigma);

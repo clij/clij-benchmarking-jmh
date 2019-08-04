@@ -11,7 +11,7 @@ import org.openjdk.jmh.annotations.Benchmark;
 
 public class MultiplyScalar3D extends AbstractBenchmark {
     @Benchmark
-    public Object ij(Images images) {
+    public Object ijapi(Images images) {
         ImagePlus imp3D = images.getImp3Da();
         for (int z = 0; z < imp3D.getNSlices(); z++) {
             imp3D.setZ(z + 1);

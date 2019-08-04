@@ -52,7 +52,7 @@ public class Mean2D extends AbstractBenchmark {
     }
 
     @Benchmark
-    public Object ij(Images images, Radius radius) {
+    public Object ijapi(Images images, Radius radius) {
         RankFilters rankFilters = new RankFilters();
         ImagePlus imp = images.getImp2Da();
         rankFilters.setup("mean", imp);

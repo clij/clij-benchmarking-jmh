@@ -15,7 +15,7 @@ import org.openjdk.jmh.annotations.Benchmark;
 
 public class MaximumZProjection extends AbstractBenchmark {
     @Benchmark
-    public Object ij(Images images) {
+    public Object ijapi(Images images) {
         ImagePlus imp3D = images.getImp2Da();
         ImagePlus imp2D = ZProjector.run(imp3D, "Max Intensity");
 //        System.out.println(Arrays.toString(imp2D.getPixel(0,0)));

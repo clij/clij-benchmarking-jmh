@@ -7,7 +7,7 @@ import org.openjdk.jmh.annotations.Benchmark;
 
 public class BinaryAnd3D extends AbstractBenchmark implements BinaryImageBenchmark {
     @Benchmark
-    public Object ij(Images images) {
+    public Object ijapi(Images images) {
         ImageCalculator ic = new ImageCalculator();
         return ic.run("AND create stack", images.getImp3DBinarya(), images.getImp3DBinaryb());
     }

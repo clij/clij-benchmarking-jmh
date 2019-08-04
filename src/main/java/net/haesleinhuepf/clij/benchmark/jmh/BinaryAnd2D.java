@@ -12,7 +12,7 @@ import org.openjdk.jmh.annotations.Benchmark;
 
 public class BinaryAnd2D extends AbstractBenchmark implements BinaryImageBenchmark {
     @Benchmark
-    public Object ij(Images images) {
+    public Object ijapi(Images images) {
         ImageCalculator ic = new ImageCalculator();
         return ic.run("AND create", images.getImp2DBinarya(), images.getImp2DBinaryb());
     }

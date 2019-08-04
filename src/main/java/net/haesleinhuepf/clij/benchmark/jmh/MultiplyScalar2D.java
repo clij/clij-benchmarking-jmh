@@ -12,7 +12,7 @@ import org.openjdk.jmh.annotations.Benchmark;
 
 public class MultiplyScalar2D extends AbstractBenchmark {
     @Benchmark
-    public Object ij(Images images) {
+    public Object ijapi(Images images) {
         images.getImp2Da().getProcessor().multiply(2);
         return images.getImp2Da();
     }

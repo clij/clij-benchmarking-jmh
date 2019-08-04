@@ -10,7 +10,7 @@ import org.openjdk.jmh.annotations.Benchmark;
 
 public class Flip2D extends AbstractBenchmark {
     @Benchmark
-    public Object ij(Images images) {
+    public Object ijapi(Images images) {
         ImagePlus imp2D = images.getImp2Da();
         Transformer transformer = new Transformer();
         transformer.setup("fliph", imp2D);

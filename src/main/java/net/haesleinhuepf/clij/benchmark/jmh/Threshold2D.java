@@ -13,7 +13,7 @@ import org.openjdk.jmh.annotations.Benchmark;
 
 public class Threshold2D extends AbstractBenchmark implements BinaryImageBenchmark {
     @Benchmark
-    public Object ij(Images images) {
+    public Object ijapi(Images images) {
         ImagePlus imp2D = images.getImp2Da();
         IJ.setThreshold(images.getImp2Da(), 128, Integer.MAX_VALUE);
         ByteProcessor byteProcessor = Thresholder.createMask(imp2D);

@@ -8,8 +8,9 @@ import net.imglib2.img.Img;
 import org.openjdk.jmh.annotations.Benchmark;
 
 public class Flip3D extends AbstractBenchmark {
+    // commented out because it didn't deliver the right results
     /*@Benchmark
-    public Object ij(Images images) {
+    public Object ijapi(Images images) {
         ImagePlus imp3D = images.getImp3Da();
         Transformer transformer = new Transformer();
         transformer.setup("fliph", imp3D);
