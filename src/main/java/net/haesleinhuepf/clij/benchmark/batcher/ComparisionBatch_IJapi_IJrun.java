@@ -13,7 +13,7 @@ import java.io.IOException;
 public class ComparisionBatch_IJapi_IJrun extends AbstractBatchGenerator {
     public static void main(String[] args) throws IOException {
         String targetDir = "C:/structure/code/clij-benchmarking-revision/clij_benchmarking_jmh/ijrun_ijapi_comparison/";
-        String batchName = "batch_ijrun_ijapi_comparison.bat";
+        String batchName = "batch_ijrun_ijapi_comparison_" + System.getenv().get("COMPUTERNAME") + ".bat";
         String additionalParameters = " -p size=1 -p radius=2 ";
 
         StringBuilder batch = new StringBuilder();
