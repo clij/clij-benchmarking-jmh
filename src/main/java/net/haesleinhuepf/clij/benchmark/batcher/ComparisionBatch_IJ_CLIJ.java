@@ -5,7 +5,7 @@ import net.haesleinhuepf.clij.benchmark.jmh.AbstractBenchmark;
 import java.io.IOException;
 
 /**
- * Generate a batch file for comparison of IJ.run and IJ-API calls
+ * Generate a batch file for comparison of IJ and CLIJ calls
  *
  * @author Robert Haase
  *         August 2019
