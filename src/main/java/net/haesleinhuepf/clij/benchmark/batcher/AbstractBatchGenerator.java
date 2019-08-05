@@ -30,7 +30,7 @@ import java.util.Comparator;
 public class AbstractBatchGenerator {
 
     static final String batchTemplate = "java -jar target/benchmarks3.jar #METHOD# #ADDITIONAL_PARAMETERS# -rf csv\r\n" +
-                            "copy jmh-result.csv #TARGET_DIR#jmh-result_myers3_#METHOD#.csv\r\n";
+                            "copy jmh-result.csv #TARGET_DIR#jmh-result_#COMPUTERNAME#_#METHOD#.csv\r\n";
 
     protected static AbstractBenchmark[] benchmarks = {
             new AANoOp(),
@@ -90,6 +90,7 @@ public class AbstractBatchGenerator {
                                     .replace("#METHOD#", "." + benchmark.getClass().getSimpleName() + "." + methodname)
                                     .replace("#TARGET_DIR#", targetDir)
                                     .replace("#ADDITIONAL_PARAMETERS#", additionalParameters)
+                                    .replace("#COMPUTERNAME#", System.getenv().get("COMPUTERNAME"))
                     );
                 }
             }
