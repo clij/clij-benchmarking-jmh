@@ -57,8 +57,8 @@ public class ImageComparison {
                 new RadialReslice(),
                 new Rotate2D(),
                 new Rotate3D(),
-                new Threshold2D(),
-                new Threshold3D()
+                new FixedThreshold2D(),
+                new FixedThreshold3D()
         };
 
 

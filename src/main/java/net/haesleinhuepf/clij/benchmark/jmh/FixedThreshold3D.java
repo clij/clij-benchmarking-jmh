@@ -11,7 +11,7 @@ import net.imglib2.img.Img;
 import net.imglib2.type.numeric.RealType;
 import org.openjdk.jmh.annotations.Benchmark;
 
-public class Threshold3D extends AbstractBenchmark implements BinaryImageBenchmark {
+public class FixedThreshold3D extends AbstractBenchmark implements BinaryImageBenchmark {
 
     @Benchmark
     public Object clij(CLImages images) {

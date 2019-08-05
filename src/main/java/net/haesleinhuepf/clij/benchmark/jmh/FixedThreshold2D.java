@@ -11,7 +11,7 @@ import net.imglib2.img.Img;
 import net.imglib2.type.numeric.RealType;
 import org.openjdk.jmh.annotations.Benchmark;
 
-public class Threshold2D extends AbstractBenchmark implements BinaryImageBenchmark {
+public class FixedThreshold2D extends AbstractBenchmark implements BinaryImageBenchmark {
     @Benchmark
     public Object ijapi(Images images) {
         ImagePlus imp2D = images.getImp2Da();

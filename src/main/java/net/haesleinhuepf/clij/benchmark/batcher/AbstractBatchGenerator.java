@@ -1,25 +1,9 @@
 package net.haesleinhuepf.clij.benchmark.batcher;
 
 import ij.IJ;
-import ij.ImagePlus;
-import ij.gui.NewImage;
-import ij.gui.Roi;
-import ij.plugin.Duplicator;
-import ij.process.ImageStatistics;
-import net.haesleinhuepf.clij.CLIJ;
 import net.haesleinhuepf.clij.benchmark.jmh.*;
-import net.haesleinhuepf.clij.clearcl.ClearCLBuffer;
-import net.imagej.ops.OpService;
-import net.imglib2.RandomAccessibleInterval;
-import net.imglib2.img.Img;
-import net.imglib2.img.display.imagej.ImageJFunctions;
-import net.imglib2.realtransform.AffineTransform2D;
-import net.imglib2.type.numeric.RealType;
-import net.imglib2.util.Pair;
 
-import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -60,8 +44,8 @@ public class AbstractBatchGenerator {
             new RadialReslice(),
             new Rotate2D(),
             new Rotate3D(),
-            new Threshold2D(),
-            new Threshold3D()
+            new FixedThreshold2D(),
+            new FixedThreshold3D()
     };
 
 
