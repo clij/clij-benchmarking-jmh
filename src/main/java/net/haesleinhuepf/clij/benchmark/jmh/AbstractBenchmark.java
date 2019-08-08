@@ -179,7 +179,7 @@ public class AbstractBenchmark {
 
         private void checkExistingFile(int sizeX, int sizeY, int sizeZ, String filename) {
             if (!new File(filename).exists()) {
-                ImagePlus imp = NewImage.createByteImage("title", sizeX, sizeY, sizeZ,
+                ImagePlus imp = NewImage.createShortImage("title", sizeX, sizeY, sizeZ,
                         NewImage.FILL_RANDOM);
                 IJ.save(imp, filename);
             }
