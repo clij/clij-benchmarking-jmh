@@ -64,10 +64,10 @@ public class AbstractBatchGenerator {
 
         Method[] methods = Arrays.copyOf(benchmark.getClass().getMethods(), benchmark.getClass().getMethods().length);
         Arrays.sort(methods, Comparator.comparing(Method::getName));
-        for (Method method : methods) {
-            String methodname = method.getName();
-            //System.out.println(methodname);
-            for (String template : methodCandidates) {
+        for (String template : methodCandidates) {
+            for (Method method : methods) {
+                String methodname = method.getName();
+                //System.out.println(methodname);
                 if (methodname.compareTo(template) == 0) {
                     batch.append(
                             batchTemplate
