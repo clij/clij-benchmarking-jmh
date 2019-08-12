@@ -25,9 +25,7 @@ public class ComparisionBatch_IJ_CLIJ_Radii extends AbstractBatchGenerator {
                 if (benchmark instanceof GaussianBlur2D ||
                     benchmark instanceof GaussianBlur3D ||
                     benchmark instanceof Minimum2D ||
-                    benchmark instanceof Minimum3D ||
-                    benchmark instanceof Mean2D ||
-                    benchmark instanceof Mean3D
+                    benchmark instanceof Minimum3D 
                 ) {
                     String ij = getBatchEntry(new String[]{"ijrun", "ijapi", "vib"}, targetDir, benchmark, additionalParameters);
                     String clij = getBatchEntry(new String[]{"clij", "clij_sphere"}, targetDir, benchmark, additionalParameters);
