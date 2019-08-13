@@ -71,7 +71,7 @@ public class AbstractBatchGenerator {
                 if (methodname.compareTo(template) == 0) {
                     batch.append(
                             batchTemplate
-                                    .replace("#METHOD#", "." + benchmark.getClass().getSimpleName() + "." + methodname)
+                                    .replace("#METHOD#", "." + benchmark.getClass().getSimpleName() + "." + methodname +"$")
                                     .replace("#TARGET_DIR#", targetDir)
                                     .replace("#ADDITIONAL_PARAMETERS#", additionalParameters)
                                     .replace("#COMPUTERNAME#", System.getenv().get("COMPUTERNAME"))
