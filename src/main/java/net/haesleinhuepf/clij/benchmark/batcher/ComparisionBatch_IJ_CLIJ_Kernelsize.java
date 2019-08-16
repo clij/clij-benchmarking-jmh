@@ -10,9 +10,9 @@ import java.io.IOException;
  * @author Robert Haase
  *         August 2019
  */
-public class ComparisionBatch_IJ_CLIJ_Radii extends AbstractBatchGenerator {
+public class ComparisionBatch_IJ_CLIJ_Kernelsize extends AbstractBatchGenerator {
     public static void main(String[] args) throws IOException {
-        String targetDir = "C:/structure/code/clij-benchmarking-revision/clij_benchmarking_jmh/ij_clij_radii_comparison/";
+        String targetDir = "C:/structure/code/clij-benchmarking/data/benchmarking-jmh/kernelsize/";
         String batchName = "batch_ij__clij_comparison_radii_" + System.getenv().get("COMPUTERNAME")+ ".bat";
 
         StringBuilder batch = new StringBuilder();
