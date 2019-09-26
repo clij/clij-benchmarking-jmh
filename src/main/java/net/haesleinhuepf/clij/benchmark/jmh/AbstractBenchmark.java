@@ -22,13 +22,14 @@ import org.scijava.io.IOService;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
 
-@BenchmarkMode(Mode.AverageTime)
+//@BenchmarkMode(Mode.AverageTime)
+@BenchmarkMode(Mode.SingleShotTime)
 @OutputTimeUnit(TimeUnit.NANOSECONDS)
-@Warmup(iterations = 10, time = 1, timeUnit = TimeUnit.SECONDS)
-@Measurement(iterations = 10, time = 1, timeUnit = TimeUnit.SECONDS)
-@Timeout(time = 10, timeUnit = TimeUnit.SECONDS)
+@Warmup(iterations = 10, batchSize = 1)
+@Measurement(iterations = 100, batchSize = 1)
 @State(Scope.Benchmark)
 @Fork(value = 1, jvmArgs = {"-server", "-Xms2G", "-Xmx2G"})
 public class AbstractBenchmark {
@@ -82,13 +83,19 @@ public class AbstractBenchmark {
         int[][] sizes3D = {
                 {1, 1, 1},
                 {1024, 1024, 8},
-                {1024, 1024, 16},
+                {1024, 1024, 10},
                 {1024, 1024, 12},
+                {1024, 1024, 16},
+                {1024, 1024, 20},
                 {1024, 1024, 24},
+                {1024, 1024, 28},
                 {1024, 1024, 32},
                 {1024, 1024, 48},
+                {1024, 1024, 56},
                 {1024, 1024, 64},
+                {1024, 1024, 72},
                 {1024, 1024, 96},
+                {1024, 1024, 112},
                 {1024, 1024, 128}
         };
 
@@ -157,6 +164,20 @@ public class AbstractBenchmark {
             return imp3Dbinaryb;
         }
 
+        HashMap<String, ImagePlus> randomImages = new HashMap<String, ImagePlus>();
+        int invocationCount = 0;
+
+        ImagePlus openImage(String filename) {
+            ImagePlus imp = null;
+            if (randomImages.containsKey(filename)) {
+                imp = randomImages.get(filename);
+            } else {
+                imp = IJ.openImage(filename);
+                randomImages.put(filename, imp);
+            }
+            return new Duplicator().run(imp);
+        }
+
         @Setup(Level.Invocation)
         public void setup() {
             //System.out.println("im setup");
@@ -164,13 +185,15 @@ public class AbstractBenchmark {
             int size2D[] = sizes2D[size];
             int size3D[] = sizes3D[size];
 
-            String filename2D = "./random_" +size2D[0] + "_" + size2D[1] + "_" + size2D[2] + ".tif";
+            invocationCount = (invocationCount + 1) % 10;
+
+            String filename2D = "./random" + invocationCount + "_" +size2D[0] + "_" + size2D[1] + "_" + size2D[2] + ".tif";
             checkExistingFile(size2D[0], size2D[1], size2D[2], filename2D);
 
-            String filename3D = "./random_" + size3D[0] + "_" + size3D[1] + "_" + size3D[2] + ".tif";
+            String filename3D = "./random" + invocationCount + "_" + size3D[0] + "_" + size3D[1] + "_" + size3D[2] + ".tif";
             checkExistingFile(size3D[0], size3D[1], size3D[2], filename3D);
 
-            imp2Da = IJ.openImage(filename2D);
+            imp2Da = openImage(filename2D);
             imp2Db = new Duplicator().run(imp2Da);
             imp2Dc = new Duplicator().run(imp2Da);
 
@@ -180,7 +203,7 @@ public class AbstractBenchmark {
             imp2Dbinaryb = new Duplicator().run(imp2Dbinarya);
 
 
-            imp3Da = IJ.openImage(filename3D);
+            imp3Da = openImage(filename3D);
             imp3Db = new Duplicator().run(imp3Da, 1, imp3Da.getNSlices());
             imp3Dc = new Duplicator().run(imp3Da, 1, imp3Da.getNSlices());
 
