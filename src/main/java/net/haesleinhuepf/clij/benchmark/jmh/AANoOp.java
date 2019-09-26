@@ -5,8 +5,11 @@ import net.haesleinhuepf.clij.clearcl.ClearCLBuffer;
 import org.openjdk.jmh.annotations.Benchmark;
 
 public class AANoOp extends AbstractBenchmark {
+    //static int counter = 0;
     @Benchmark
     public Object ij(Images images) {
+        //counter ++;
+        //System.out.println("hello world " + counter);
         return images.getImp2Da();
     }
 
