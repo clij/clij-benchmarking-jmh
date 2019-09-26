@@ -53,7 +53,7 @@ public class AbstractBenchmark {
     public static class Images {
         // Use a single pixel for testing the clijNoOp
 //@Param({"1"})
-        @Param({"0", "1", "2", "3", "4"})
+        @Param({"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19"})
         //@Param({"4096"/*, "2048"*/})
         int size;
 
@@ -82,6 +82,9 @@ public class AbstractBenchmark {
 
         int[][] sizes3D = {
                 {1, 1, 1},
+                {1024, 1024, 1},
+                {1024, 1024, 2},
+                {1024, 1024, 4},
                 {1024, 1024, 8},
                 {1024, 1024, 10},
                 {1024, 1024, 12},
@@ -90,6 +93,7 @@ public class AbstractBenchmark {
                 {1024, 1024, 24},
                 {1024, 1024, 28},
                 {1024, 1024, 32},
+                {1024, 1024, 40},
                 {1024, 1024, 48},
                 {1024, 1024, 56},
                 {1024, 1024, 64},
