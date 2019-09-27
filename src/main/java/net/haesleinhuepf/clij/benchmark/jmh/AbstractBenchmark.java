@@ -173,13 +173,17 @@ public class AbstractBenchmark {
 
         ImagePlus openImage(String filename) {
             ImagePlus imp = null;
-            if (randomImages.containsKey(filename)) {
-                imp = randomImages.get(filename);
-            } else {
+            //if (randomImages.containsKey(filename)) {
+            //    imp = randomImages.get(filename);
+            //} else {
                 imp = IJ.openImage(filename);
-                randomImages.put(filename, imp);
-            }
-            return new Duplicator().run(imp);
+            //    if (randomImages.size() >= 10) {
+            //        randomImages.clear();
+            //    }
+            //    randomImages.put(filename, imp);
+            //}
+            //return new Duplicator().run(imp);
+            return imp;
         }
 
         @Setup(Level.Invocation)
