@@ -31,7 +31,7 @@ import java.util.concurrent.TimeUnit;
 @Warmup(iterations = 10, batchSize = 1)
 @Measurement(iterations = 100, batchSize = 1)
 @State(Scope.Benchmark)
-@Fork(value = 1, jvmArgs = {"-server", "-Xms2G", "-Xmx2G"})
+@Fork(value = 1, jvmArgs = {"-server", "-Xms12G", "-Xmx12G"})
 public class AbstractBenchmark {
     private static final int DEFAULT_THREADS = Prefs.getThreads();
     private RankFilters rankFilters = new RankFilters();
