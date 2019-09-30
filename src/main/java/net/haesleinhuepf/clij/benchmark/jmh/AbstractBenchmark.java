@@ -40,7 +40,7 @@ public class AbstractBenchmark {
     private ImagePlus emptyImp = new ImagePlus();
     @State(Scope.Benchmark)
     public static class Radius {
-        @Param({"2", "4", "6", "10"})
+        @Param({"1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15"})
         int radius;
         float getRadiusF() {
             return radius;
