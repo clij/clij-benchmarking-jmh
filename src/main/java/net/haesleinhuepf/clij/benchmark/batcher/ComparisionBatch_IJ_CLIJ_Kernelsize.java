@@ -16,9 +16,8 @@ public class ComparisionBatch_IJ_CLIJ_Kernelsize extends AbstractBatchGenerator 
         String batchName = "batch_ij__clij_comparison_radii_" + System.getenv().get("COMPUTERNAME")+ ".bat";
 
         StringBuilder batch = new StringBuilder();
-        for (int radius = 2; radius <= 64; radius = radius * 2) {
+        for (int radius = 1; radius <= 15; radius = radius + 1) {
 
-            String additionalParameters = " -p size=3 -p radius=" + radius + " ";
 
 
             for (AbstractBenchmark benchmark : benchmarks) {
@@ -27,15 +26,22 @@ public class ComparisionBatch_IJ_CLIJ_Kernelsize extends AbstractBatchGenerator 
                     benchmark instanceof Minimum2D ||
                     benchmark instanceof Minimum3D 
                 ) {
+                    int radiusDependingOnBenchmark = radius;
+                    if (benchmark instanceof GaussianBlur2D ||
+                            benchmark instanceof GaussianBlur3D) {
+                        radiusDependingOnBenchmark = radius * 2;
+                    }
+                    String additionalParameters = " -p size=7 -p radius=" + radiusDependingOnBenchmark + " ";
+
                     String ij = getBatchEntry(new String[]{"ijrun", "ijapi", "vib"}, targetDir, benchmark, additionalParameters);
                     String clij = getBatchEntry(new String[]{"clij", "clij_sphere"}, targetDir, benchmark, additionalParameters);
 
                     ij = ij.replace(
                             "_." + benchmark.getClass().getSimpleName() + ".",
-                            "_." + benchmark.getClass().getSimpleName() + "_radius_" + radius + ".");
+                            "_." + benchmark.getClass().getSimpleName() + "_radius_" + radiusDependingOnBenchmark + ".");
                     clij = clij.replace(
                             "_." + benchmark.getClass().getSimpleName() + ".",
-                            "_." + benchmark.getClass().getSimpleName() + "_radius_" + radius + ".");
+                            "_." + benchmark.getClass().getSimpleName() + "_radius_" + radiusDependingOnBenchmark + ".");
 
                     if (clij.length() > 0 && ij.length() > 0) {
                         batch.append(ij.split("\r\n")[0] + "\r\n");
