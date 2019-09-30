@@ -40,4 +40,12 @@ public class Flip2D extends AbstractBenchmark {
         images.getOpService().run(CLIJ_flip.class, clb2Dc, clb2Da, true, false, false);
         return clb2Dc;
     }
+
+    @Benchmark
+    public Object ijCachedOpsCLIJ(IJ2CLImages images) {
+        ClearCLBuffer clb2Da = images.getCLImage2Da();
+        ClearCLBuffer clb2Dc = images.getCLImage2Dc();
+        images.getFlipOp().compute(clb2Dc, clb2Da);
+        return clb2Dc;
+    }
 }

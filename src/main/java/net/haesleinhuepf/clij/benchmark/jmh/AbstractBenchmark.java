@@ -10,18 +10,18 @@ import ij.plugin.filter.RankFilters;
 import net.haesleinhuepf.clij.CLIJ;
 import net.haesleinhuepf.clij.CLIJService;
 import net.haesleinhuepf.clij.clearcl.ClearCLBuffer;
-import net.haesleinhuepf.clij.coremem.rgc.RessourceCleaner;
+import net.haesleinhuepf.clij.ops.CLIJ_flip.CLIJ_flip;
 import net.imagej.ops.OpService;
+import net.imagej.ops.special.computer.Computers;
+import net.imagej.ops.special.computer.UnaryComputerOp;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.img.Img;
 import net.imglib2.img.display.imagej.ImageJFunctions;
 import net.imglib2.view.Views;
 import org.openjdk.jmh.annotations.*;
 import org.scijava.Context;
-import org.scijava.io.IOService;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
 
@@ -52,8 +52,8 @@ public class AbstractBenchmark {
     @State(Scope.Benchmark)
     public static class Images {
         // Use a single pixel for testing the clijNoOp
-        //@Param({"1"})
-        @Param({"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13"})
+        @Param({"1"})
+//        @Param({"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13"})
         //@Param({"4096"/*, "2048"*/})
         int size;
 
@@ -423,6 +423,7 @@ public class AbstractBenchmark {
     public static class IJ2CLImages extends CLImages {
 
         OpService opService;
+        private UnaryComputerOp<ClearCLBuffer, ClearCLBuffer> flipOp;
 
         @Setup(Level.Invocation)
         public void setup() {
@@ -438,10 +439,15 @@ public class AbstractBenchmark {
             super.reinit();
             Context context = new Context(OpService.class, CLIJService.class);
             opService = context.service(OpService.class);
+            flipOp = Computers.unary(opService, CLIJ_flip.class, ClearCLBuffer.class, ClearCLBuffer.class, true, false, false);
         }
 
         public OpService getOpService() {
             return opService;
+        }
+
+        public UnaryComputerOp<ClearCLBuffer, ClearCLBuffer> getFlipOp() {
+            return flipOp;
         }
 
     }
