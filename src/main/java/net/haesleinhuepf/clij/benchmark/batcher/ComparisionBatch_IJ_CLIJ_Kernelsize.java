@@ -31,7 +31,12 @@ public class ComparisionBatch_IJ_CLIJ_Kernelsize extends AbstractBatchGenerator 
                             benchmark instanceof GaussianBlur3D) {
                         radiusDependingOnBenchmark = radius * 2;
                     }
-                    String additionalParameters = " -p size=7 -p radius=" + radiusDependingOnBenchmark + " ";
+                    String additionalParameters;
+                    if (benchmark.getClass().getSimpleName().contains("2D")) {
+                        additionalParameters = " -p size=11 -p radius=" + radiusDependingOnBenchmark + " ";
+                    } else {
+                        additionalParameters = " -p size=7 -p radius=" + radiusDependingOnBenchmark + " ";
+                    }
 
                     String ij = getBatchEntry(new String[]{"ijrun", "ijapi", "vib"}, targetDir, benchmark, additionalParameters);
                     String clij = getBatchEntry(new String[]{"clij", "clij_sphere"}, targetDir, benchmark, additionalParameters);
