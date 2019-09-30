@@ -13,7 +13,7 @@ import java.util.Comparator;
 
 public class AbstractBatchGenerator {
 
-    static final String batchTemplate = "java -Xms8192m -Xmx8192m  -jar target/benchmarks3.jar #METHOD# #ADDITIONAL_PARAMETERS# -rf csv\r\n" +
+    static final String batchTemplate = "java -Xms12G -Xmx12G  -jar target/benchmarks3.jar #METHOD# #ADDITIONAL_PARAMETERS# -rf csv\r\n" +
                             "copy jmh-result.csv #TARGET_DIR#jmh-result_#COMPUTERNAME#_#METHOD_WITHOUT_DOLLAR#.csv\r\n";
 
     protected static AbstractBenchmark[] benchmarks = {
