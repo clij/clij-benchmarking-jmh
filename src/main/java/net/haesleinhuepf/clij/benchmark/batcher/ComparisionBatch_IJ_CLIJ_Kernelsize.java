@@ -16,7 +16,7 @@ public class ComparisionBatch_IJ_CLIJ_Kernelsize extends AbstractBatchGenerator 
         String batchName = "batch_ij__clij_comparison_radii_" + System.getenv().get("COMPUTERNAME")+ ".bat";
 
         StringBuilder batch = new StringBuilder();
-        for (int radius = 1; radius <= 15; radius = radius + 1) {
+        for (int radius = 1; radius <= 14; radius = radius + 1) {
 
 
 
