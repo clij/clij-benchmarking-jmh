@@ -3,29 +3,30 @@
 
  Directory of C:\structure\code\clij-benchmarking-jmh
 
-10/04/2019  02:49 PM    <DIR>          .
-10/04/2019  02:49 PM    <DIR>          ..
+10/05/2019  05:08 PM    <DIR>          .
+10/05/2019  05:08 PM    <DIR>          ..
 07/28/2019  12:30 PM                45 .gitignore
-10/04/2019  02:34 PM    <DIR>          .idea
+10/04/2019  02:54 PM    <DIR>          .idea
 08/07/2019  06:16 PM             6,792 batch_ijrun_ijapi_comparison.bat
 09/23/2019  10:57 AM             6,260 batch_ijrun_ijapi_comparison_MYERS-PC-3.bat
 08/07/2019  06:16 PM            12,532 batch_ij__clij_comparison.bat
-09/30/2019  12:12 PM            12,852 batch_ij__clij_comparison_MYERS-PC-21.bat
+10/04/2019  02:55 PM            12,852 batch_ij__clij_comparison_MYERS-PC-21.bat
 09/26/2019  03:03 PM            13,076 batch_ij__clij_comparison_MYERS-PC-22.bat
 10/01/2019  01:14 PM            27,952 batch_ij__clij_comparison_radii_MYERS-PC-21.bat
 09/30/2019  12:02 PM            29,956 batch_ij__clij_comparison_radii_MYERS-PC-22.bat
+10/05/2019  05:14 PM             8,974 batch_remaining_comparison_MYERS-PC-21.bat
 08/08/2019  11:30 AM                94 bench_MYERS-PC-21.bat
 08/08/2019  11:30 AM                94 bench_MYERS-PC-22.bat
 09/28/2019  12:28 PM             7,105 clij-benchmarking-jmh.iml
 08/08/2019  10:48 AM    <DIR>          imagecomparsion
 07/25/2019  09:32 PM                58 install.bat
-10/03/2019  11:11 PM               218 jmh-result.csv
-10/04/2019  02:49 PM                 0 myers21_filesize.log
+10/06/2019  11:24 AM             1,664 jmh-result.csv
+10/06/2019  11:31 AM                 0 myers21_filesize.log
 09/28/2019  12:27 PM             9,058 pom.xml
 09/28/2019  12:32 PM         2,097,320 random0_1024_1024_1.tif
 09/28/2019  12:42 PM       209,727,875 random0_1024_1024_100.tif
 09/28/2019  12:31 PM        25,167,409 random0_1024_1024_12.tif
-09/28/2019  12:45 PM               201 random0_1024_1024_128.tif
+10/04/2019  03:03 PM       268,451,659 random0_1024_1024_128.tif
 09/28/2019  12:31 PM        33,556,521 random0_1024_1024_16.tif
 09/28/2019  12:32 PM        41,945,633 random0_1024_1024_20.tif
 09/28/2019  12:32 PM        50,334,745 random0_1024_1024_24.tif
@@ -45,7 +46,7 @@
 09/28/2019  12:39 PM         8,388,776 random0_2048_2048_1.tif
 09/28/2019  12:30 PM           131,240 random0_256_256_1.tif
 09/28/2019  12:42 PM        18,874,536 random0_3072_3072_1.tif
-09/28/2019  12:45 PM               168 random0_4096_4096_1.tif
+10/04/2019  03:03 PM        33,554,600 random0_4096_4096_1.tif
 09/28/2019  12:31 PM           524,456 random0_512_512_1.tif
 09/28/2019  12:31 PM           720,168 random0_600_600_1.tif
 09/28/2019  12:32 PM         1,280,168 random0_800_800_1.tif
@@ -241,7 +242,7 @@
 09/28/2019  12:32 PM         2,097,320 random8_1024_1024_1.tif
 09/28/2019  12:42 PM       209,727,875 random8_1024_1024_100.tif
 09/28/2019  12:31 PM        25,167,409 random8_1024_1024_12.tif
-09/28/2019  12:45 PM               201 random8_1024_1024_128.tif
+10/04/2019  03:03 PM       268,451,659 random8_1024_1024_128.tif
 09/28/2019  12:31 PM        33,556,521 random8_1024_1024_16.tif
 09/28/2019  12:32 PM        41,945,633 random8_1024_1024_20.tif
 09/28/2019  12:32 PM        50,334,745 random8_1024_1024_24.tif
@@ -261,14 +262,14 @@
 09/28/2019  12:39 PM         8,388,776 random8_2048_2048_1.tif
 09/28/2019  12:30 PM           131,240 random8_256_256_1.tif
 09/28/2019  12:42 PM        18,874,536 random8_3072_3072_1.tif
-09/28/2019  12:45 PM               168 random8_4096_4096_1.tif
+10/04/2019  03:03 PM        33,554,600 random8_4096_4096_1.tif
 09/28/2019  12:31 PM           524,456 random8_512_512_1.tif
 09/28/2019  12:31 PM           720,168 random8_600_600_1.tif
 09/28/2019  12:32 PM         1,280,168 random8_800_800_1.tif
 09/28/2019  12:32 PM         2,097,320 random9_1024_1024_1.tif
 09/28/2019  12:42 PM       209,727,875 random9_1024_1024_100.tif
 09/28/2019  12:31 PM        25,167,409 random9_1024_1024_12.tif
-09/28/2019  12:45 PM               201 random9_1024_1024_128.tif
+10/04/2019  03:03 PM       268,451,659 random9_1024_1024_128.tif
 09/28/2019  12:31 PM        33,556,521 random9_1024_1024_16.tif
 09/28/2019  12:32 PM        41,945,633 random9_1024_1024_20.tif
 09/28/2019  12:32 PM        50,334,745 random9_1024_1024_24.tif
@@ -288,12 +289,12 @@
 09/28/2019  12:39 PM         8,388,776 random9_2048_2048_1.tif
 09/28/2019  12:30 PM           131,240 random9_256_256_1.tif
 09/28/2019  12:42 PM        18,874,536 random9_3072_3072_1.tif
-09/28/2019  12:45 PM               168 random9_4096_4096_1.tif
+10/04/2019  03:03 PM        33,554,600 random9_4096_4096_1.tif
 09/28/2019  12:31 PM           524,456 random9_512_512_1.tif
 09/28/2019  12:31 PM           720,168 random9_600_600_1.tif
 09/28/2019  12:32 PM         1,280,168 random9_800_800_1.tif
 09/26/2019  02:53 PM             3,561 readme.md
 07/25/2019  03:32 PM    <DIR>          src
 07/28/2019  12:34 PM    <DIR>          target
-             286 File(s) 11,857,316,171 bytes
-               6 Dir(s)  45,090,721,792 bytes free
+             287 File(s) 12,763,344,261 bytes
+               6 Dir(s)  43,647,721,472 bytes free
