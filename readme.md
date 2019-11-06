@@ -67,4 +67,6 @@ In most cases, the `clij_sphere` method is closer to its ImageJ1 counter part wh
 Furthermore, some operations exists `singlethreaded` and `multithreaded`. 
 These implementations can help tracing if the tested implementations can make use of modern multi-core CPUs.
 
-[Back to CLIJ documentation](https://clij.github.io)
+[Back to CLIJ documentation](https://clij.github.io/)
+
+[Imprint](https://clij.github.io/imprint)
